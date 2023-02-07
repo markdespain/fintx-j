@@ -38,12 +38,14 @@ repositories {
 
 dependencies {
     val picoliVersion = "4.7.1" // command line parsing: https://picocli.info
+    val immutablesVersion = "2.9.2"
 
     implementation("info.picocli:picocli:${picoliVersion}")
-    implementation("org.immutables:value:2.9.2")
+    implementation("org.immutables:value:${immutablesVersion}")
     implementation("com.google.guava:guava:31.1-jre")
 
     annotationProcessor("info.picocli:picocli:${picoliVersion}")
+    annotationProcessor("org.immutables:value:${immutablesVersion}")
 
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
@@ -69,7 +71,7 @@ spotless {
     }
 
     java {
-        googleJavaFormat("1.9").aosp().reflowLongStrings()
+        googleJavaFormat("1.15.0").aosp().reflowLongStrings()
         formatAnnotations()
     }
 }
@@ -78,4 +80,8 @@ afterEvaluate {
     // automatically apply code formatting during the build
     // ref: https://stackoverflow.com/questions/40432291/gradle-spotless-task-not-firing-when-needed
     tasks.getByName("spotlessCheck").dependsOn(tasks.getByName("spotlessApply"))
+}
+
+spotbugs {
+    excludeFilter.set(project.file("spotbugs-exclude.xml"))
 }

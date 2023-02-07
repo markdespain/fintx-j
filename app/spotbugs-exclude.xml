@@ -1,0 +1,5 @@
+<FindBugsFilter>
+    <Match>
+        <ClassRegEx name="fintx.Immutable.*" />
+    </Match>
+</FindBugsFilter>
