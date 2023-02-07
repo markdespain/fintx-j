@@ -30,3 +30,6 @@ build
 
 # IntelliJ idea project files
 .idea
+
+# ignore local testing resoruces
+app/src/test/resources/local/*
