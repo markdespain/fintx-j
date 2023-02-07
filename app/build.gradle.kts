@@ -37,9 +37,13 @@ repositories {
 }
 
 dependencies {
+    val picoliVersion = "4.7.1" // command line parsing: https://picocli.info
 
+    implementation("info.picocli:picocli:${picoliVersion}")
     implementation("org.immutables:value:2.9.2")
     implementation("com.google.guava:guava:31.1-jre")
+
+    annotationProcessor("info.picocli:picocli:${picoliVersion}")
 
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")

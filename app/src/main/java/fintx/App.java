@@ -3,12 +3,19 @@
  */
 package fintx;
 
-public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+import java.util.concurrent.Callable;
+import picocli.CommandLine;
+
+@CommandLine.Command
+public class App implements Callable<Integer> {
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        new CommandLine(new App()).execute(args);
+    }
+
+    @Override
+    public Integer call() {
+        System.out.println("Hello World!");
+        return 0;
     }
 }
