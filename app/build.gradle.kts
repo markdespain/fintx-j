@@ -37,11 +37,12 @@ repositories {
 }
 
 dependencies {
+
+    implementation("org.immutables:value:2.9.2")
+    implementation("com.google.guava:guava:31.1-jre")
+
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
-
-    // This dependency is used by the application.
-    implementation("com.google.guava:guava:31.1-jre")
 }
 
 application {
