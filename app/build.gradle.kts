@@ -23,6 +23,9 @@ buildscript {
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+
+    // code formatting. ref: https://github.com/diffplug/spotless/tree/main/plugin-gradle#quickstart
+    id("com.diffplug.spotless") version "6.14.1"
 }
 
 repositories {
@@ -46,4 +49,19 @@ application {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+spotless {
+
+    format("misd") {
+        target("*.gradle", "*.md", ".gitignore")
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
+    }
+
+    java {
+        googleJavaFormat("1.9").aosp().reflowLongStrings()
+        formatAnnotations()
+    }
 }
