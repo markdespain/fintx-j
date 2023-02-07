@@ -4,23 +4,48 @@
 package fintx;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import picocli.CommandLine;
 
 @CommandLine.Command
-public class App implements Callable<Integer> {
+public class App implements Callable<Result> {
 
     @CommandLine.Parameters(description = "file to digest")
     private File file;
 
     public static void main(String[] args) {
-        final int exitCode = new CommandLine(new App()).execute(args);
+        final CommandLine commandLine = new CommandLine(new App());
+        final int exitCode = commandLine.execute(args);
+        final Result result = commandLine.getExecutionResult();
+        result.error()
+                .ifPresent(
+                        appError -> {
+                            System.err.println(appError.message());
+                            System.exit(exitCode == 0 ? 1 : exitCode);
+                        });
+        result.output().ifPresent(System.out::println);
         System.exit(exitCode);
     }
 
     @Override
-    public Integer call() {
-        System.out.println("received file: " + file.getAbsolutePath());
-        return 0;
+    public Result call() {
+        if (!file.exists()) {
+            return ImmutableResult.builder().error(AppError.fileNotFound(file)).build();
+        }
+        if (!file.isFile()) {
+            return ImmutableResult.builder().error(AppError.notAFile(file)).build();
+        }
+        final List<String> output;
+        try (final Stream<String> lines = Files.lines(file.toPath())) {
+            output = lines.collect(Collectors.toList());
+        } catch (final IOException e) {
+            return ImmutableResult.builder().error(AppError.loadFileFailure(file, e)).build();
+        }
+        return ImmutableResult.builder().output(output.toString()).build();
     }
 }
