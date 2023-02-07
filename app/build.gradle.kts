@@ -6,6 +6,20 @@
  * User Manual available at https://docs.gradle.org/7.6/userguide/building_java_projects.html
  */
 
+// enable dependency locking, per https://docs.gradle.org/current/userguide/dependency_locking.html
+configurations {
+    compileClasspath {
+        resolutionStrategy.activateDependencyLocking()
+    }
+}
+
+// enable dependency locking for build plugins, per https://docs.gradle.org/current/userguide/dependency_locking.html
+buildscript {
+    configurations.classpath {
+        resolutionStrategy.activateDependencyLocking()
+    }
+}
+
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
