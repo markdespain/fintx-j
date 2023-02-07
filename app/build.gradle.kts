@@ -26,6 +26,9 @@ plugins {
 
     // code formatting. ref: https://github.com/diffplug/spotless/tree/main/plugin-gradle#quickstart
     id("com.diffplug.spotless") version "6.14.1"
+
+    // static analysis via Soptbugs. ref: https://plugins.gradle.org/plugin/com.github.spotbugs
+    id("com.github.spotbugs") version "5.0.13"
 }
 
 repositories {
