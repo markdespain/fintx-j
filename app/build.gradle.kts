@@ -69,3 +69,9 @@ spotless {
         formatAnnotations()
     }
 }
+
+afterEvaluate {
+    // automatically apply code formatting during the build
+    // ref: https://stackoverflow.com/questions/40432291/gradle-spotless-task-not-firing-when-needed
+    tasks.getByName("spotlessCheck").dependsOn(tasks.getByName("spotlessApply"))
+}
