@@ -5,6 +5,7 @@ package fintx;
 
 import fintx.digest.DigestResult;
 import fintx.digest.RakutenCsvStatementDigester;
+import fintx.model.AppError;
 import java.io.File;
 import java.util.Optional;
 import java.util.concurrent.Callable;
@@ -27,25 +28,25 @@ public class App implements Callable<DigestResult> {
                 res -> {
                     if (!res.errors().isEmpty()) {
                         System.err.println("ERRORS ENCOUNTERED:");
-                        res.errors().forEach(System.err::println);
+                        res.errors().stream().map(AppError::message).forEach(System.err::println);
                     }
                     if (!res.transactions().isEmpty()) {
-                        System.err.println("TRANSACTIONS:");
+                        System.out.println("TRANSACTIONS:");
                         res.transactions().forEach(System.out::println);
                     }
                 });
-        final int finalExitCode =
-                result.map(
-                                res ->
-                                        (!res.errors().isEmpty() && cmomandLineExitCode == SUCCESS)
-                                                ? FAIL
-                                                : cmomandLineExitCode)
-                        .orElse(SUCCESS);
-        System.exit(finalExitCode);
+        System.exit(getFinalErrorCode(result, cmomandLineExitCode));
     }
 
     @Override
     public DigestResult call() {
         return new RakutenCsvStatementDigester().digest(file);
+    }
+
+    static int getFinalErrorCode(final Optional<DigestResult> result, final int cmomandLineExitCode){
+        return result
+                .filter(digestResult -> digestResult.errors().isEmpty() || cmomandLineExitCode != SUCCESS)
+                .map(digestResult -> cmomandLineExitCode)
+                .orElse(FAIL);
     }
 }

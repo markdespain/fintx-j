@@ -48,10 +48,11 @@ public class RakutenCsvStatementDigester {
 
     static Result<FinTransaction> map(final int lineNumber, final String[] line) {
         if (line.length < NUM_REQUIRED_COLS) {
-            final String message = String.format(
-                "line does not have enough columns. required: %s, actual: %s,"
-                        + " lineNumber: %s",
-                NUM_REQUIRED_COLS, line.length, lineNumber);
+            final String message =
+                    String.format(
+                            "line does not have enough columns. required: %s, actual: %s,"
+                                    + " lineNumber: %s",
+                            NUM_REQUIRED_COLS, line.length, lineNumber);
             return Result.error(AppError.message(message));
         }
 
@@ -59,10 +60,10 @@ public class RakutenCsvStatementDigester {
         try {
             date = LocalDate.parse(line[0], DATE_FORMAT);
         } catch (DateTimeParseException e) {
-            final String message = String.format(
-                    "line has a malformed date at column 0. value: %s, lineNumber: %s",
-                    line[0], lineNumber
-            );
+            final String message =
+                    String.format(
+                            "line has a malformed date at column 0. value: %s, lineNumber: %s",
+                            line[0], lineNumber);
             return Result.error(AppError.message(message));
         }
         return Result.value(
