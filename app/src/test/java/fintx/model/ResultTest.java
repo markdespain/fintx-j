@@ -31,7 +31,7 @@ public class ResultTest {
             final Optional<String> output,
             final boolean expectValid) {
         final Executable executable =
-                () -> ImmutableResult.builder().error(error).output(output).build();
+                () -> ImmutableResult.builder().error(error).value(output).build();
         if (expectValid) {
             Assertions.assertDoesNotThrow(executable);
         } else {

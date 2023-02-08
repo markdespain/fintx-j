@@ -34,7 +34,7 @@ public class App implements Callable<Result> {
                                         System.err.println(appError.message());
                                         System.exit(exitCode == 0 ? 1 : exitCode);
                                     });
-                    res.output().ifPresent(System.out::println);
+                    res.value().ifPresent(System.out::println);
                 });
         System.exit(exitCode);
     }
@@ -53,6 +53,6 @@ public class App implements Callable<Result> {
         } catch (final IOException e) {
             return ImmutableResult.builder().error(AppError.loadFileFailure(file, e)).build();
         }
-        return ImmutableResult.builder().output(output.toString()).build();
+        return ImmutableResult.builder().value(output.toString()).build();
     }
 }
