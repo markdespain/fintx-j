@@ -3,6 +3,9 @@
  */
 package fintx;
 
+import fintx.model.AppError;
+import fintx.model.ImmutableResult;
+import fintx.model.Result;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,13 +26,16 @@ public class App implements Callable<Result> {
         final CommandLine commandLine = new CommandLine(new App());
         final int exitCode = commandLine.execute(args);
         final Optional<Result> result = Optional.ofNullable(commandLine.getExecutionResult());
-        result.ifPresent( res -> {
-            res.error().ifPresent(appError -> {
-                System.err.println(appError.message());
-                System.exit(exitCode == 0 ? 1 : exitCode);
-            });
-            res.output().ifPresent(System.out::println);
-        });
+        result.ifPresent(
+                res -> {
+                    res.error()
+                            .ifPresent(
+                                    appError -> {
+                                        System.err.println(appError.message());
+                                        System.exit(exitCode == 0 ? 1 : exitCode);
+                                    });
+                    res.output().ifPresent(System.out::println);
+                });
         System.exit(exitCode);
     }
 

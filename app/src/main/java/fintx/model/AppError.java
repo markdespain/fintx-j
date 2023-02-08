@@ -1,4 +1,4 @@
-package fintx;
+package fintx.model;
 
 import java.io.File;
 import java.io.IOException;
