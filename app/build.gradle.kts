@@ -43,6 +43,7 @@ dependencies {
     implementation("info.picocli:picocli:${picoliVersion}")
     implementation("org.immutables:value:${immutablesVersion}")
     implementation("com.google.guava:guava:31.1-jre")
+    implementation("com.opencsv:opencsv:5.7.1")
 
     annotationProcessor("info.picocli:picocli:${picoliVersion}")
     annotationProcessor("org.immutables:value:${immutablesVersion}")

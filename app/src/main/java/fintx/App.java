@@ -3,56 +3,49 @@
  */
 package fintx;
 
-import fintx.model.AppError;
-import fintx.model.Result;
+import fintx.digest.DigestResult;
+import fintx.digest.RakutenCsvStatementDigester;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import picocli.CommandLine;
 
 @CommandLine.Command
-public class App implements Callable<Result> {
+public class App implements Callable<DigestResult> {
+
+    private static final int SUCCESS = 0;
+    private static final int FAIL = 1;
 
     @CommandLine.Parameters(description = "file to digest")
     private File file;
 
     public static void main(String[] args) {
         final CommandLine commandLine = new CommandLine(new App());
-        final int exitCode = commandLine.execute(args);
-        final Optional<Result<String>> result =
-                Optional.ofNullable(commandLine.getExecutionResult());
+        final int cmomandLineExitCode = commandLine.execute(args);
+        final Optional<DigestResult> result = Optional.ofNullable(commandLine.getExecutionResult());
         result.ifPresent(
                 res -> {
-                    res.error()
-                            .ifPresent(
-                                    appError -> {
-                                        System.err.println(appError.message());
-                                        System.exit(exitCode == 0 ? 1 : exitCode);
-                                    });
-                    res.value().ifPresent(System.out::println);
+                    if (!res.errors().isEmpty()) {
+                        System.err.println("ERRORS ENCOUNTERED:");
+                        res.errors().forEach(System.err::println);
+                    }
+                    if (!res.transactions().isEmpty()) {
+                        System.err.println("TRANSACTIONS:");
+                        res.transactions().forEach(System.out::println);
+                    }
                 });
-        System.exit(exitCode);
+        final int finalExitCode =
+                result.map(
+                                res ->
+                                        (!res.errors().isEmpty() && cmomandLineExitCode == SUCCESS)
+                                                ? FAIL
+                                                : cmomandLineExitCode)
+                        .orElse(SUCCESS);
+        System.exit(finalExitCode);
     }
 
     @Override
-    public Result<String> call() {
-        if (!file.exists()) {
-            return Result.error(AppError.fileNotFound(file));
-        }
-        if (!file.isFile()) {
-            return Result.error(AppError.notAFile(file));
-        }
-        final List<String> output;
-        try (final Stream<String> lines = Files.lines(file.toPath())) {
-            output = lines.collect(Collectors.toList());
-        } catch (final IOException e) {
-            return Result.error(AppError.loadFileFailure(file, e));
-        }
-        return Result.value(output.toString());
+    public DigestResult call() {
+        return new RakutenCsvStatementDigester().digest(file);
     }
 }
