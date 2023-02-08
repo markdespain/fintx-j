@@ -4,7 +4,6 @@
 package fintx;
 
 import fintx.model.AppError;
-import fintx.model.ImmutableResult;
 import fintx.model.Result;
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +24,8 @@ public class App implements Callable<Result> {
     public static void main(String[] args) {
         final CommandLine commandLine = new CommandLine(new App());
         final int exitCode = commandLine.execute(args);
-        final Optional<Result> result = Optional.ofNullable(commandLine.getExecutionResult());
+        final Optional<Result<String>> result =
+                Optional.ofNullable(commandLine.getExecutionResult());
         result.ifPresent(
                 res -> {
                     res.error()
@@ -40,19 +40,19 @@ public class App implements Callable<Result> {
     }
 
     @Override
-    public Result call() {
+    public Result<String> call() {
         if (!file.exists()) {
-            return ImmutableResult.builder().error(AppError.fileNotFound(file)).build();
+            return Result.error(AppError.fileNotFound(file));
         }
         if (!file.isFile()) {
-            return ImmutableResult.builder().error(AppError.notAFile(file)).build();
+            return Result.error(AppError.notAFile(file));
         }
         final List<String> output;
         try (final Stream<String> lines = Files.lines(file.toPath())) {
             output = lines.collect(Collectors.toList());
         } catch (final IOException e) {
-            return ImmutableResult.builder().error(AppError.loadFileFailure(file, e)).build();
+            return Result.error(AppError.loadFileFailure(file, e));
         }
-        return ImmutableResult.builder().value(output.toString()).build();
+        return Result.value(output.toString());
     }
 }
