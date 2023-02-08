@@ -63,7 +63,7 @@ tasks.named<Test>("test") {
 
 spotless {
 
-    format("misd") {
+    format("misc") {
         target("*.gradle", "*.md", ".gitignore")
         trimTrailingWhitespace()
         indentWithSpaces()
