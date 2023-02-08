@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,14 +22,14 @@ public class App implements Callable<Result> {
     public static void main(String[] args) {
         final CommandLine commandLine = new CommandLine(new App());
         final int exitCode = commandLine.execute(args);
-        final Result result = commandLine.getExecutionResult();
-        result.error()
-                .ifPresent(
-                        appError -> {
-                            System.err.println(appError.message());
-                            System.exit(exitCode == 0 ? 1 : exitCode);
-                        });
-        result.output().ifPresent(System.out::println);
+        final Optional<Result> result = Optional.ofNullable(commandLine.getExecutionResult());
+        result.ifPresent( res -> {
+            res.error().ifPresent(appError -> {
+                System.err.println(appError.message());
+                System.exit(exitCode == 0 ? 1 : exitCode);
+            });
+            res.output().ifPresent(System.out::println);
+        });
         System.exit(exitCode);
     }
 
