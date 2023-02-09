@@ -35,13 +35,18 @@ public class CsvDigester {
         }
 
         @Value.Default
-        default int placeOrProductIndex() {
+        default int amountIndex() {
             return 1;
         }
 
         @Value.Default
-        default int amountIndex() {
+        default int placeOrProductIndex() {
             return 2;
+        }
+
+        @Value.Default
+        default String dateFormat() {
+            return "M/d/yyyy";
         }
 
         @Value.Check
@@ -60,6 +65,12 @@ public class CsvDigester {
         }
     }
 
+
+    /**
+     * A reusable instance for the default configuration.
+     */
+    public static final Config DEFAULT = ImmutableConfig.builder().build();
+
     /**
      * Config for digesting Rakuten credit card transactions in CSV format.
      *
@@ -76,23 +87,25 @@ public class CsvDigester {
      *      6               支払総額          The total amount to be paid for the transaction
      * </pre>
      */
-    public static final Config RAKUTEN_CC = ImmutableConfig.builder().amountIndex(4).build();
+    public static final Config RAKUTEN_CC = ImmutableConfig.builder()
+            .dateFormat("yyyy/M/d")
+            .placeOrProductIndex(1)
+            .amountIndex(4)
+            .build();
+
+    private final Config config;
+    private final DateTimeFormatter dateFormat;
 
     public CsvDigester(final Config config) {
         this.config = config;
+        this.dateFormat = DateTimeFormatter.ofPattern(config.dateFormat());
     }
-
-    private final Config config;
-
-    private static final int NUM_HEADER_LINES = 1;
-
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
     public DigestResult digest(final File file) {
         final List<String[]> lines;
         try (final CSVReader reader =
                 new CSVReaderBuilder(new BufferedReader(new FileReader(file)))
-                        .withSkipLines(NUM_HEADER_LINES)
+                        .withSkipLines(config.numHeaderLines())
                         .build()) {
             lines = reader.readAll();
         } catch (FileNotFoundException e) {
@@ -105,7 +118,7 @@ public class CsvDigester {
         final List<Err> appErrors = new ArrayList<>(0);
         final List<FinTransaction> transactions = new ArrayList<>(0);
         for (int i = 0; i < lines.size(); i++) {
-            final int lineNumber = NUM_HEADER_LINES + i;
+            final int lineNumber = config.numHeaderLines() + i;
             final Result<FinTransaction> transactionResult = map(lineNumber, lines.get(i));
             transactionResult.error().ifPresent(appErrors::add);
             transactionResult.value().ifPresent(transactions::add);
@@ -125,12 +138,12 @@ public class CsvDigester {
 
         final LocalDate date;
         try {
-            date = LocalDate.parse(line[config.dateIndex()], DATE_FORMAT);
+            date = LocalDate.parse(line[config.dateIndex()], dateFormat);
         } catch (DateTimeParseException e) {
             final String message =
                     String.format(
-                            "line has a malformed date at column 0. value: %s, lineNumber: %s",
-                            line[config.dateIndex()], lineNumber);
+                            "line has a malformed date. expectedFormat: %s, value: %s, line: %s, column: %s",
+                            config.dateFormat(), line[config.dateIndex()], lineNumber, config.dateIndex());
             return Result.error(Err.message(message));
         }
         return Result.value(

@@ -17,30 +17,37 @@ public class App implements Callable<DigestResult> {
     private static final int SUCCESS = 0;
     private static final int FAIL = 1;
 
-    @CommandLine.Option(names = "-r", description = "Rakuten transactions in CSV format")
+    @CommandLine.Option(names = "-r", description = "Rakuten transactions file in CSV format", required = true)
     private File rakutenFile;
+
+    @CommandLine.Option(names = "-g", description = "Generic transactions file in CSV format", required = true)
+    private File genericFile;
 
     public static void main(String[] args) {
         final CommandLine commandLine = new CommandLine(new App());
         final int commandLineExitCode = commandLine.execute(args);
         final Optional<DigestResult> result = Optional.ofNullable(commandLine.getExecutionResult());
-        result.ifPresent(
-                res -> {
-                    if (!res.errors().isEmpty()) {
-                        System.err.println("ERRORS ENCOUNTERED:");
-                        res.errors().stream().map(Err::message).forEach(System.err::println);
-                    }
-                    if (!res.transactions().isEmpty()) {
-                        System.out.println("TRANSACTIONS:");
-                        res.transactions().forEach(System.out::println);
-                    }
-                });
+        result.ifPresent(App::print);
         System.exit(getFinalErrorCode(result, commandLineExitCode));
+    }
+
+    private static void print(final DigestResult res) {
+        if (!res.errors().isEmpty()) {
+            System.err.println("ERRORS ENCOUNTERED:");
+            res.errors().stream().map(Err::message).forEach(System.err::println);
+        }
+        if (!res.transactions().isEmpty()) {
+            System.out.println("TRANSACTIONS:");
+            res.transactions().forEach(System.out::println);
+        }
     }
 
     @Override
     public DigestResult call() {
-        return new CsvDigester(CsvDigester.RAKUTEN_CC).digest(rakutenFile);
+        final DigestResult rakuten = new CsvDigester(CsvDigester.RAKUTEN_CC).digest(rakutenFile);
+        final DigestResult generic = new CsvDigester(CsvDigester.DEFAULT).digest(genericFile);
+        print(generic);
+        return rakuten;
     }
 
     static int getFinalErrorCode(
