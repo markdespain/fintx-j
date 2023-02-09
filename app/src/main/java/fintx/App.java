@@ -3,9 +3,9 @@
  */
 package fintx;
 
-import fintx.digest.CsvDigester;
 import fintx.digest.DigestResult;
 import fintx.model.Err;
+import fintx.report.Reconciler;
 import java.io.File;
 import java.util.Optional;
 import java.util.concurrent.Callable;
@@ -17,10 +17,16 @@ public class App implements Callable<DigestResult> {
     private static final int SUCCESS = 0;
     private static final int FAIL = 1;
 
-    @CommandLine.Option(names = "-r", description = "Rakuten transactions file in CSV format", required = true)
+    @CommandLine.Option(
+            names = "-r",
+            description = "Rakuten transactions file in CSV format",
+            required = true)
     private File rakutenFile;
 
-    @CommandLine.Option(names = "-g", description = "Generic transactions file in CSV format", required = true)
+    @CommandLine.Option(
+            names = "-g",
+            description = "Generic transactions file in CSV format",
+            required = true)
     private File genericFile;
 
     public static void main(String[] args) {
@@ -44,18 +50,15 @@ public class App implements Callable<DigestResult> {
 
     @Override
     public DigestResult call() {
-        final DigestResult rakuten = new CsvDigester(CsvDigester.RAKUTEN_CC).digest(rakutenFile);
-        final DigestResult generic = new CsvDigester(CsvDigester.DEFAULT).digest(genericFile);
-        print(generic);
-        return rakuten;
+        return new Reconciler().reconcile(rakutenFile, genericFile);
     }
 
     static int getFinalErrorCode(
-            final Optional<DigestResult> result, final int cmomandLineExitCode) {
+            final Optional<DigestResult> result, final int commandLineExitCode) {
         return result.filter(
                         digestResult ->
-                                digestResult.errors().isEmpty() || cmomandLineExitCode != SUCCESS)
-                .map(digestResult -> cmomandLineExitCode)
+                                digestResult.errors().isEmpty() || commandLineExitCode != SUCCESS)
+                .map(digestResult -> commandLineExitCode)
                 .orElse(FAIL);
     }
 }

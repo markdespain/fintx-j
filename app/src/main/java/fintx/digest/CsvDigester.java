@@ -65,10 +65,7 @@ public class CsvDigester {
         }
     }
 
-
-    /**
-     * A reusable instance for the default configuration.
-     */
+    /** A reusable instance for the default configuration. */
     public static final Config DEFAULT = ImmutableConfig.builder().build();
 
     /**
@@ -87,11 +84,12 @@ public class CsvDigester {
      *      6               支払総額          The total amount to be paid for the transaction
      * </pre>
      */
-    public static final Config RAKUTEN_CC = ImmutableConfig.builder()
-            .dateFormat("yyyy/M/d")
-            .placeOrProductIndex(1)
-            .amountIndex(4)
-            .build();
+    public static final Config RAKUTEN_CC =
+            ImmutableConfig.builder()
+                    .dateFormat("yyyy/M/d")
+                    .placeOrProductIndex(1)
+                    .amountIndex(4)
+                    .build();
 
     private final Config config;
     private final DateTimeFormatter dateFormat;
@@ -142,8 +140,12 @@ public class CsvDigester {
         } catch (DateTimeParseException e) {
             final String message =
                     String.format(
-                            "line has a malformed date. expectedFormat: %s, value: %s, line: %s, column: %s",
-                            config.dateFormat(), line[config.dateIndex()], lineNumber, config.dateIndex());
+                            "line has a malformed date. expectedFormat: %s, value: %s, line: %s,"
+                                    + " column: %s",
+                            config.dateFormat(),
+                            line[config.dateIndex()],
+                            lineNumber,
+                            config.dateIndex());
             return Result.error(Err.message(message));
         }
         return Result.value(
