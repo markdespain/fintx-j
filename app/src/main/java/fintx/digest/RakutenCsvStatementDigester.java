@@ -14,6 +14,22 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Digests FinTransaction from a set Rakuten credit card transactions in CSV format.
+ *
+ * <p>The CSV should have a header row on the first line with the following columns:
+ *
+ * <pre>
+ *      Column Index    Column Name     (Unofficial) Column Description
+ *      0               利用日           date of the transaction
+ *      1               利用店名・商品名   either place of purchase or the product purchased
+ *      2               家族             member of the account make the purchase (?)
+ *      3               支払方法          method of payment
+ *      4               利用金額          cost of the product
+ *      5               支払手数料        additional commission paid
+ *      6               支払総額          The total amount to be paid for the transaction
+ * </pre>
+ */
 public class RakutenCsvStatementDigester {
     private static final int NUM_HEADER_LINES = 1;
 
@@ -70,11 +86,7 @@ public class RakutenCsvStatementDigester {
                 ImmutableFinTransaction.builder()
                         .date(date)
                         .placeOrProduct(line[1])
-                        .user(line[2])
-                        .paymentMethod(line[3])
-                        .amountSpent(line[4])
-                        .commissionPaid(line[5])
-                        .totalToPay(line[6])
+                        .amount(line[4])
                         .build());
     }
 }
