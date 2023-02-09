@@ -3,8 +3,8 @@
  */
 package fintx;
 
+import fintx.digest.CsvDigester;
 import fintx.digest.DigestResult;
-import fintx.digest.RakutenCsvStatementDigester;
 import fintx.model.AppError;
 import java.io.File;
 import java.util.Optional;
@@ -40,7 +40,7 @@ public class App implements Callable<DigestResult> {
 
     @Override
     public DigestResult call() {
-        return new RakutenCsvStatementDigester().digest(file);
+        return new CsvDigester(CsvDigester.RAKUTEN_CC).digest(file);
     }
 
     static int getFinalErrorCode(

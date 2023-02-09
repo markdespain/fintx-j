@@ -11,7 +11,7 @@ import org.immutables.value.Value;
  * The result of digesting a file into transactions. Note that this can contain both digested lines
  * and errors.
  *
- * @see RakutenCsvStatementDigester#digest(File)
+ * @see CsvDigester#digest(File)
  */
 @Value.Immutable
 public interface DigestResult {
