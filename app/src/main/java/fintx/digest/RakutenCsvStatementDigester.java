@@ -73,7 +73,7 @@ public class RakutenCsvStatementDigester {
                         .user(line[2])
                         .paymentMethod(line[3])
                         .amountSpent(line[4])
-                        .commisionPaid(line[5])
+                        .commissionPaid(line[5])
                         .totalToPay(line[6])
                         .build());
     }

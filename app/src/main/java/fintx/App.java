@@ -43,9 +43,11 @@ public class App implements Callable<DigestResult> {
         return new RakutenCsvStatementDigester().digest(file);
     }
 
-    static int getFinalErrorCode(final Optional<DigestResult> result, final int cmomandLineExitCode){
-        return result
-                .filter(digestResult -> digestResult.errors().isEmpty() || cmomandLineExitCode != SUCCESS)
+    static int getFinalErrorCode(
+            final Optional<DigestResult> result, final int cmomandLineExitCode) {
+        return result.filter(
+                        digestResult ->
+                                digestResult.errors().isEmpty() || cmomandLineExitCode != SUCCESS)
                 .map(digestResult -> cmomandLineExitCode)
                 .orElse(FAIL);
     }

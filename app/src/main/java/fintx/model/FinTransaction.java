@@ -44,11 +44,11 @@ public interface FinTransaction {
     String amountSpent();
 
     /**
-     * The additional commmision paid.
+     * The additional commission paid.
      *
      * <p>field: 支払手数料, 5
      */
-    String commisionPaid();
+    String commissionPaid();
 
     /**
      * The total amount to be paid for the transaction
