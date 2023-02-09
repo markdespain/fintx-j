@@ -17,12 +17,12 @@ public class App implements Callable<DigestResult> {
     private static final int SUCCESS = 0;
     private static final int FAIL = 1;
 
-    @CommandLine.Parameters(description = "file to digest")
-    private File file;
+    @CommandLine.Option(names = "-r", description = "Rakuten transactions in CSV format")
+    private File rakutenFile;
 
     public static void main(String[] args) {
         final CommandLine commandLine = new CommandLine(new App());
-        final int cmomandLineExitCode = commandLine.execute(args);
+        final int commandLineExitCode = commandLine.execute(args);
         final Optional<DigestResult> result = Optional.ofNullable(commandLine.getExecutionResult());
         result.ifPresent(
                 res -> {
@@ -35,12 +35,12 @@ public class App implements Callable<DigestResult> {
                         res.transactions().forEach(System.out::println);
                     }
                 });
-        System.exit(getFinalErrorCode(result, cmomandLineExitCode));
+        System.exit(getFinalErrorCode(result, commandLineExitCode));
     }
 
     @Override
     public DigestResult call() {
-        return new CsvDigester(CsvDigester.RAKUTEN_CC).digest(file);
+        return new CsvDigester(CsvDigester.RAKUTEN_CC).digest(rakutenFile);
     }
 
     static int getFinalErrorCode(
