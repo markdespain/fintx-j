@@ -5,7 +5,7 @@ package fintx;
 
 import fintx.digest.CsvDigester;
 import fintx.digest.DigestResult;
-import fintx.model.AppError;
+import fintx.model.Err;
 import java.io.File;
 import java.util.Optional;
 import java.util.concurrent.Callable;
@@ -28,7 +28,7 @@ public class App implements Callable<DigestResult> {
                 res -> {
                     if (!res.errors().isEmpty()) {
                         System.err.println("ERRORS ENCOUNTERED:");
-                        res.errors().stream().map(AppError::message).forEach(System.err::println);
+                        res.errors().stream().map(Err::message).forEach(System.err::println);
                     }
                     if (!res.transactions().isEmpty()) {
                         System.out.println("TRANSACTIONS:");

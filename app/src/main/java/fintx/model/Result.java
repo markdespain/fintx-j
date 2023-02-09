@@ -6,7 +6,7 @@ import org.immutables.value.Value;
 @Value.Immutable
 public interface Result<V> {
 
-    static <T> Result<T> error(final AppError error) {
+    static <T> Result<T> error(final Err error) {
         return (Result<T>) ImmutableResult.builder().error(error).build();
     }
 
@@ -14,7 +14,7 @@ public interface Result<V> {
         return (Result<T>) ImmutableResult.builder().value(value).build();
     }
 
-    Optional<AppError> error();
+    Optional<Err> error();
 
     Optional<V> value();
 

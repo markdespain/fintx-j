@@ -1,7 +1,7 @@
 package fintx.digest;
 
 import com.google.common.collect.ImmutableList;
-import fintx.model.AppError;
+import fintx.model.Err;
 import fintx.model.FinTransaction;
 import java.io.File;
 import java.util.Collections;
@@ -16,14 +16,14 @@ import org.immutables.value.Value;
 @Value.Immutable
 public interface DigestResult {
 
-    static DigestResult error(final AppError error) {
+    static DigestResult error(final Err error) {
         return ImmutableDigestResult.builder()
                 .errors(Collections.singletonList(error))
                 .transactions(Collections.emptyList())
                 .build();
     }
 
-    ImmutableList<AppError> errors();
+    ImmutableList<Err> errors();
 
     ImmutableList<FinTransaction> transactions();
 }

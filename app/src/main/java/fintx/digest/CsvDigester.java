@@ -6,7 +6,7 @@ import com.google.common.base.Preconditions;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvException;
-import fintx.model.AppError;
+import fintx.model.Err;
 import fintx.model.FinTransaction;
 import fintx.model.ImmutableFinTransaction;
 import fintx.model.Result;
@@ -96,13 +96,13 @@ public class CsvDigester {
                         .build()) {
             lines = reader.readAll();
         } catch (FileNotFoundException e) {
-            return DigestResult.error(AppError.fileNotFound(file));
+            return DigestResult.error(Err.fileNotFound(file));
         } catch (IOException e) {
-            return DigestResult.error(AppError.loadFileFailure(file, e));
+            return DigestResult.error(Err.loadFileFailure(file, e));
         } catch (CsvException e) {
-            return DigestResult.error(AppError.fileError("csv parsing failure", file, e));
+            return DigestResult.error(Err.fileError("csv parsing failure", file, e));
         }
-        final List<AppError> appErrors = new ArrayList<>(0);
+        final List<Err> appErrors = new ArrayList<>(0);
         final List<FinTransaction> transactions = new ArrayList<>(0);
         for (int i = 0; i < lines.size(); i++) {
             final int lineNumber = NUM_HEADER_LINES + i;
@@ -120,7 +120,7 @@ public class CsvDigester {
                             "line does not have enough columns. required: %s, actual: %s,"
                                     + " lineNumber: %s",
                             config.maxIndex() + 1, line.length, lineNumber);
-            return Result.error(AppError.message(message));
+            return Result.error(Err.message(message));
         }
 
         final LocalDate date;
@@ -131,7 +131,7 @@ public class CsvDigester {
                     String.format(
                             "line has a malformed date at column 0. value: %s, lineNumber: %s",
                             line[config.dateIndex()], lineNumber);
-            return Result.error(AppError.message(message));
+            return Result.error(Err.message(message));
         }
         return Result.value(
                 ImmutableFinTransaction.builder()

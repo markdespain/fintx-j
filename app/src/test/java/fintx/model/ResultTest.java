@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 public class ResultTest {
 
     static Stream<Arguments> testValidation() {
-        final Optional<AppError> error = Optional.of(AppError.fileNotFound(new File(".")));
+        final Optional<Err> error = Optional.of(Err.fileNotFound(new File(".")));
         final Optional<String> output = Optional.of("output");
         return Stream.of(
                 arguments(empty(), empty(), false),
@@ -27,9 +27,7 @@ public class ResultTest {
     @ParameterizedTest
     @MethodSource
     void testValidation(
-            final Optional<AppError> error,
-            final Optional<String> output,
-            final boolean expectValid) {
+            final Optional<Err> error, final Optional<String> output, final boolean expectValid) {
         final Executable executable =
                 () -> ImmutableResult.builder().error(error).value(output).build();
         if (expectValid) {
