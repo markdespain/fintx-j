@@ -96,16 +96,18 @@ public class Reconciler {
             if (txnsForAmount.isEmpty()) {
                 missing.add(tx);
             } else {
-                // remove the tranxaction... Note that this approach is flawed in the case of
+                // remove the transaction depending on if a match ws found
                 final int indexToRemove =
+                        // note: perhaps matching by date is more likely...
                         Collections.binarySearch(txnsForAmount, tx, PLACE_OR_PRODUCT);
                 if (indexToRemove >= 0) {
-                    // exact match, so the transaction can be removed
                     txnsForAmount.remove(indexToRemove);
                 } else {
-                    // just remove the first item in the list.  note that this approach is flawed in
+                    // no match, so just remove the first item in the list.  note that this approach
+                    // is flawed in
                     // the case of
-                    // multiple txns with the same amount, since a later transaction could have had
+                    // multiple transactions with the same amount, since a later transaction could
+                    // have had
                     // an exact match.
                     // However, for the moment I'll consider it as good enough.
                     txnsForAmount.remove(0);
