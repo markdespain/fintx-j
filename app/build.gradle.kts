@@ -29,6 +29,8 @@ plugins {
 
     // static analysis via Soptbugs. ref: https://plugins.gradle.org/plugin/com.github.spotbugs
     id("com.github.spotbugs") version "5.0.13"
+
+    jacoco
 }
 
 repositories {
@@ -60,6 +62,10 @@ application {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+
+    // report is always generated after tests run
+    // ref: https://docs.gradle.org/current/userguide/jacoco_plugin.html
+    finalizedBy(tasks.jacocoTestReport)
 }
 
 spotless {
