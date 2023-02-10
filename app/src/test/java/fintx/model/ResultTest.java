@@ -3,10 +3,10 @@ package fintx.model;
 import static java.util.Optional.empty;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
+import fintx.JunitUtil;
 import java.io.File;
 import java.util.Optional;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -30,10 +30,6 @@ public class ResultTest {
             final Optional<Err> error, final Optional<String> output, final boolean expectValid) {
         final Executable executable =
                 () -> ImmutableResult.builder().error(error).value(output).build();
-        if (expectValid) {
-            Assertions.assertDoesNotThrow(executable);
-        } else {
-            Assertions.assertThrows(IllegalArgumentException.class, executable);
-        }
+        JunitUtil.assertValidity(executable, expectValid);
     }
 }

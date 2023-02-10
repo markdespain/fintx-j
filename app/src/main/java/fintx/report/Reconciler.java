@@ -7,9 +7,7 @@ import fintx.model.*;
 import java.io.File;
 import java.util.*;
 
-/**
- * Produces a report that reconciles transactions contained within two files.
- */
+/** Produces a report that reconciles transactions contained within two files. */
 public class Reconciler {
 
     private static final Comparator<FinTransaction> PLACE_OR_PRODUCT =
@@ -20,7 +18,6 @@ public class Reconciler {
      *
      * @param rakutenFile file that is in the Rakuten CSV file format
      * @param genericFile file that is in the default generic CSV file format
-     *
      * @see fintx.digest.CsvDigester#RAKUTEN_CC
      * @see fintx.digest.CsvDigester#DEFAULT
      */
@@ -56,13 +53,12 @@ public class Reconciler {
                 .build();
     }
 
-
     /**
-     * Returns a mutable Map of transactions, grouped by their amount. The list of transactions
-     * for each amount is also mutable, as well as sorted by {@link #PLACE_OR_PRODUCT}.
+     * Returns a mutable Map of transactions, grouped by their amount. The list of transactions for
+     * each amount is also mutable, as well as sorted by {@link #PLACE_OR_PRODUCT}.
      *
-     * This returned value is intended to be used by {@link #findMissing(ImmutableList, Map)}, which
-     * will modify the returned value.
+     * <p>This returned value is intended to be used by {@link #findMissing(ImmutableList, Map)},
+     * which will modify the returned value.
      */
     private static Map<String, List<FinTransaction>> groupByAmountSortByPlaceOrProduct(
             final ImmutableList<FinTransaction> transactions) {
