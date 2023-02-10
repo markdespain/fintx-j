@@ -150,6 +150,7 @@ public class CsvDigester {
         }
         return Result.value(
                 ImmutableFinTransaction.builder()
+                        .lineNumber(lineNumber)
                         .date(date)
                         .placeOrProduct(line[config.placeOrProductIndex()])
                         .amount(line[config.amountIndex()])

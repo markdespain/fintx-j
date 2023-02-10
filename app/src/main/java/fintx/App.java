@@ -3,8 +3,7 @@
  */
 package fintx;
 
-import fintx.digest.DigestResult;
-import fintx.model.Err;
+import fintx.model.Report;
 import fintx.report.Reconciler;
 import java.io.File;
 import java.util.Optional;
@@ -12,7 +11,7 @@ import java.util.concurrent.Callable;
 import picocli.CommandLine;
 
 @CommandLine.Command
-public class App implements Callable<DigestResult> {
+public class App implements Callable<Report> {
 
     private static final int SUCCESS = 0;
     private static final int FAIL = 1;
@@ -32,32 +31,22 @@ public class App implements Callable<DigestResult> {
     public static void main(String[] args) {
         final CommandLine commandLine = new CommandLine(new App());
         final int commandLineExitCode = commandLine.execute(args);
-        final Optional<DigestResult> result = Optional.ofNullable(commandLine.getExecutionResult());
+        final Optional<Report> result = Optional.ofNullable(commandLine.getExecutionResult());
         result.ifPresent(App::print);
         System.exit(getFinalErrorCode(result, commandLineExitCode));
     }
 
-    private static void print(final DigestResult res) {
-        if (!res.errors().isEmpty()) {
-            System.err.println("ERRORS ENCOUNTERED:");
-            res.errors().stream().map(Err::message).forEach(System.err::println);
-        }
-        if (!res.transactions().isEmpty()) {
-            System.out.println("TRANSACTIONS:");
-            res.transactions().forEach(System.out::println);
-        }
+    private static void print(final Report report) {
+        System.out.println(report);
     }
 
     @Override
-    public DigestResult call() {
+    public Report call() {
         return new Reconciler().reconcile(rakutenFile, genericFile);
     }
 
-    static int getFinalErrorCode(
-            final Optional<DigestResult> result, final int commandLineExitCode) {
-        return result.filter(
-                        digestResult ->
-                                digestResult.errors().isEmpty() || commandLineExitCode != SUCCESS)
+    static int getFinalErrorCode(final Optional<Report> result, final int commandLineExitCode) {
+        return result.filter(report -> commandLineExitCode != SUCCESS || !report.hasErrors())
                 .map(digestResult -> commandLineExitCode)
                 .orElse(FAIL);
     }

@@ -7,6 +7,9 @@ import org.immutables.value.Value;
 @Value.Immutable
 public interface FinTransaction {
 
+    /** The line number of the transaction */
+    int lineNumber();
+
     /** date of the transaction */
     LocalDate date();
 
