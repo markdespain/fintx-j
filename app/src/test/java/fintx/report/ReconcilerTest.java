@@ -28,6 +28,10 @@ public class ReconcilerTest {
                         Collections.emptyList(),
                         Collections.emptyList()),
                 arguments(
+                        "ReconcilerTest/txWithSameAmount/",
+                        Collections.emptyList(),
+                        Collections.emptyList()),
+                arguments(
                         "ReconcilerTest/noOverlap/",
                         Arrays.asList(
                                 ImmutableFinTransaction.builder()
@@ -83,7 +87,6 @@ public class ReconcilerTest {
         final File genericFile = JunitUtil.fileForTestResource(testFolder + "generic.csv");
         final Reconciler reconciler = new Reconciler();
         final Report report = reconciler.reconcile(rakutenFile, genericFile);
-
         final Report expectedReport =
                 ImmutableReport.builder()
                         .rakutenFileInfo(
