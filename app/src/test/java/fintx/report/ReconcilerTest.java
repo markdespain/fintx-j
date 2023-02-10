@@ -50,6 +50,22 @@ public class ReconcilerTest {
                                         .date(LocalDate.of(2023, 2, 3))
                                         .placeOrProduct("eon")
                                         .amount("1784")
+                                        .build())),
+                arguments(
+                        "ReconcilerTest/partialOverlap/",
+                        Arrays.asList(
+                                ImmutableFinTransaction.builder()
+                                        .lineNumber(2)
+                                        .date(LocalDate.of(2022, 12, 30))
+                                        .placeOrProduct("item 1")
+                                        .amount("7580")
+                                        .build()),
+                        Arrays.asList(
+                                ImmutableFinTransaction.builder()
+                                        .lineNumber(2)
+                                        .date(LocalDate.of(2023, 2, 3))
+                                        .placeOrProduct("eon")
+                                        .amount("1784")
                                         .build())));
     }
 
