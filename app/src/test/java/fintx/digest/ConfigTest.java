@@ -1,16 +1,15 @@
 package fintx.digest;
 
+import static fintx.JunitUtil.INVALID;
+import static fintx.JunitUtil.VALID;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
+
 import fintx.JunitUtil;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.stream.Stream;
-
-import static fintx.JunitUtil.INVALID;
-import static fintx.JunitUtil.VALID;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 public class ConfigTest {
 
@@ -19,17 +18,16 @@ public class ConfigTest {
                 arguments(VALID, fromDefault())
 
                 // negative numbers not allowed for indexes
-                , arguments(INVALID, fromDefault().numHeaderLines(-1))
-                , arguments(INVALID, fromDefault().dateIndex(-1))
-                , arguments(INVALID, fromDefault().amountIndex(-1))
-                , arguments(INVALID, fromDefault().placeOrProductIndex(-1))
-        );
+                ,
+                arguments(INVALID, fromDefault().numHeaderLines(-1)),
+                arguments(INVALID, fromDefault().dateIndex(-1)),
+                arguments(INVALID, fromDefault().amountIndex(-1)),
+                arguments(INVALID, fromDefault().placeOrProductIndex(-1)));
     }
 
     private static ImmutableConfig.Builder fromDefault() {
         return ImmutableConfig.builder().from(CsvDigester.DEFAULT);
     }
-
 
     @ParameterizedTest
     @MethodSource
