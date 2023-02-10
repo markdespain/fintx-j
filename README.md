@@ -2,7 +2,7 @@
 A personal Java project for reconciling financial transactions.
 
 
-# Examples Commands
+# Example Commands
 
 The examples below show how to invoke the application via Gradle, based on files used by unit tests.
 
