@@ -14,13 +14,15 @@ public interface Err {
         return message("path not found: " + file.getAbsoluteFile());
     }
 
-    static Err loadFileFailure(final File file, final Exception e) {
-        return fileError("error loading file", file, e);
-    }
-
     static Err fileError(final String message, final File file, final Exception e) {
-        return message(
-                message + ". file: " + file.getAbsoluteFile() + ", message: " + e.getMessage());
+        final String errorMessage =
+                String.format(
+                        "%s, file: %s, errorType: %s, detailError: %s",
+                        message,
+                        file.getAbsoluteFile(),
+                        e.getClass().getSimpleName(),
+                        e.getMessage());
+        return message(errorMessage);
     }
 
     String message();

@@ -83,7 +83,12 @@ public class CsvDigesterTest {
                         "CsvDigesterTest/no-such-file.csv",
                         CsvDigester.DEFAULT,
                         Collections.emptyList(),
-                        ONE_ERROR)
+                        ONE_ERROR),
+                arguments(
+                        "CsvDigesterTest/generic-not-csv.json",
+                        CsvDigester.DEFAULT,
+                        Collections.emptyList(),
+                        13)
 
                 /* */ );
     }

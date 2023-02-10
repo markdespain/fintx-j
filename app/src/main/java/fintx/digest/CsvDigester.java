@@ -109,9 +109,7 @@ public class CsvDigester {
             lines = reader.readAll();
         } catch (FileNotFoundException e) {
             return DigestResult.error(Err.fileNotFound(file));
-        } catch (IOException e) {
-            return DigestResult.error(Err.loadFileFailure(file, e));
-        } catch (CsvException e) {
+        } catch (IOException | CsvException e) {
             return DigestResult.error(Err.fileError("csv parsing failure", file, e));
         }
         final List<Err> appErrors = new ArrayList<>(0);
@@ -125,7 +123,7 @@ public class CsvDigester {
         return ImmutableDigestResult.builder().errors(appErrors).transactions(transactions).build();
     }
 
-    Result<FinTransaction> map(final int lineNumber, final String[] line) {
+    private Result<FinTransaction> map(final int lineNumber, final String[] line) {
         if (line.length <= config.maxIndex()) {
             final String message =
                     String.format(
