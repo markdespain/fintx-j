@@ -8,7 +8,7 @@ num file errors: ${numRakutenErrors}
 
 Generic File: ${genericFile}
 num transactions: ${numGenericTransactions}
-num transactions not found in Generic File: ${numGenericMissing}
+num transactions not found in Rakuten File: ${numGenericMissing}
 num file errors: ${numGenericErrors}
 
 ===================================

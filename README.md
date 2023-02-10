@@ -21,7 +21,7 @@ num file errors: 0
 
 Generic File: src/test/resources/ReconcilerTest/exactMatch/generic.csv
 num transactions: 2
-num transactions not found in Generic File: 0
+num transactions not found in Rakuten File: 0
 num file errors: 0
 
 ===================================
@@ -61,7 +61,7 @@ num file errors: 0
 
 Generic File: src/test/resources/ReconcilerTest/partialOverlap/generic.csv
 num transactions: 2
-num transactions not found in Generic File: 1
+num transactions not found in Rakuten File: 1
 num file errors: 0
 
 ===================================

@@ -7,10 +7,8 @@
  */
 
 // enable dependency locking, per https://docs.gradle.org/current/userguide/dependency_locking.html
-configurations {
-    compileClasspath {
-        resolutionStrategy.activateDependencyLocking()
-    }
+dependencyLocking {
+    lockAllConfigurations()
 }
 
 // enable dependency locking for build plugins, per https://docs.gradle.org/current/userguide/dependency_locking.html
@@ -53,6 +51,7 @@ dependencies {
 
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
+    testImplementation("com.github.stefanbirkner:system-lambda:1.2.1")
 }
 
 application {
