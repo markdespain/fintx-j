@@ -51,12 +51,13 @@ public class CsvDigester {
 
         @Value.Check
         default void check() {
-            Preconditions.checkState(numHeaderLines() >= 0, "numHeaderLines must be >= 0");
-            Preconditions.checkState(dateIndex() >= 0, "dateIndex must be >= 0");
-            Preconditions.checkState(
+            Preconditions.checkArgument(numHeaderLines() >= 0, "numHeaderLines must be >= 0");
+            Preconditions.checkArgument(dateIndex() >= 0, "dateIndex must be >= 0");
+            Preconditions.checkArgument(
                     placeOrProductIndex() >= 0, "placeOrProductIndex must be >= 0");
-            Preconditions.checkState(amountIndex() >= 0, "amountIndex must be >= 0");
-            Preconditions.checkState(amountIndex() >= 0, "indexes must be unique");
+            Preconditions.checkArgument(amountIndex() >= 0, "amountIndex must be >= 0");
+
+            // note: could validate uniquieness of indexes
         }
 
         @Value.Derived

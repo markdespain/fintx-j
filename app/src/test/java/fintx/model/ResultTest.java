@@ -30,6 +30,6 @@ public class ResultTest {
             final Optional<Err> error, final Optional<String> output, final boolean expectValid) {
         final Executable executable =
                 () -> ImmutableResult.builder().error(error).value(output).build();
-        JunitUtil.assertValidity(executable, expectValid);
+        JunitUtil.assertValidity(expectValid, executable);
     }
 }
