@@ -46,7 +46,7 @@ public class Reconciler {
             final DigestResult digestResult,
             final ImmutableList<FinTransaction> missingFromOther) {
         return ImmutableFileInfo.builder()
-                .name(file.getAbsolutePath())
+                .name(file.getPath())
                 .digestErrors(digestResult.errors())
                 .numTransactions(digestResult.transactions().size())
                 .missingFromOther(missingFromOther)

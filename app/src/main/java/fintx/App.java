@@ -3,17 +3,12 @@
  */
 package fintx;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.io.Resources;
+import fintx.format.ReportFormatter;
 import fintx.model.Report;
 import fintx.report.Reconciler;
 import java.io.File;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.concurrent.Callable;
-import org.apache.commons.text.StringSubstitutor;
 import picocli.CommandLine;
 
 @CommandLine.Command
@@ -43,61 +38,8 @@ public class App implements Callable<Report> {
     }
 
     private static void print(final Report report) {
-        try {
-            final String template =
-                    Resources.toString(
-                            Resources.getResource("Report.template"), StandardCharsets.UTF_8);
-            final ImmutableMap<String, String> values =
-                    ImmutableMap.<String, String>builder()
-
-                            // Rakuten file summary
-                            .put("rakutenFile", report.rakutenFileInfo().name())
-                            .put(
-                                    "numRakutenTransactions",
-                                    Integer.toString(report.rakutenFileInfo().numTransactions()))
-                            .put(
-                                    "numRakutenMissing",
-                                    Integer.toString(
-                                            report.rakutenFileInfo().missingFromOther().size()))
-                            .put(
-                                    "numRakutenErrors",
-                                    Integer.toString(
-                                            report.rakutenFileInfo().digestErrors().size()))
-                            // Rakuten file details
-                            .put(
-                                    "rakutenMissing",
-                                    report.rakutenFileInfo().missingFromOther().toString())
-                            .put(
-                                    "rakutenErrors",
-                                    report.rakutenFileInfo().missingFromOther().toString())
-
-                            // Generic summary
-                            .put("genericFile", report.rakutenFileInfo().name())
-                            .put(
-                                    "numGenericTransactions",
-                                    Integer.toString(report.genericFileInfo().numTransactions()))
-                            .put(
-                                    "numGenericMissing",
-                                    Integer.toString(
-                                            report.genericFileInfo().missingFromOther().size()))
-                            .put(
-                                    "numGenericErrors",
-                                    Integer.toString(
-                                            report.genericFileInfo().digestErrors().size()))
-                            // Generic file details
-                            .put(
-                                    "genericMissing",
-                                    report.genericFileInfo().missingFromOther().toString())
-                            .put(
-                                    "genericErrors",
-                                    report.genericFileInfo().missingFromOther().toString())
-                            .build();
-
-            final String formattedReport = new StringSubstitutor(values).replace(template);
-            System.out.println(formattedReport);
-        } catch (IOException e) {
-            throw new UncheckedIOException("failed to load report template", e);
-        }
+        String formattedReport = new ReportFormatter().format(report);
+        System.out.println(formattedReport);
     }
 
     @Override

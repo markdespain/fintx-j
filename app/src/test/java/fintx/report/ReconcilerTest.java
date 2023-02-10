@@ -84,13 +84,13 @@ public class ReconcilerTest {
                 ImmutableReport.builder()
                         .rakutenFileInfo(
                                 ImmutableFileInfo.builder()
-                                        .name(rakutenFile.getAbsolutePath())
+                                        .name(rakutenFile.getPath())
                                         .numTransactions(2)
                                         .missingFromOther(rakutenMissingFromGeneric)
                                         .build())
                         .genericFileInfo(
                                 ImmutableFileInfo.builder()
-                                        .name(genericFile.getAbsolutePath())
+                                        .name(genericFile.getPath())
                                         .numTransactions(2)
                                         .missingFromOther(genericMissingFromRakuten)
                                         .build())
