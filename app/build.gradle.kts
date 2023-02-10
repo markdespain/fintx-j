@@ -46,6 +46,7 @@ dependencies {
     implementation("org.immutables:value:${immutablesVersion}")
     implementation("com.google.guava:guava:31.1-jre")
     implementation("com.opencsv:opencsv:5.7.1")
+    implementation("org.apache.commons:commons-text:1.10.0")
 
     annotationProcessor("info.picocli:picocli:${picoliVersion}")
     annotationProcessor("org.immutables:value:${immutablesVersion}")

@@ -1,0 +1,30 @@
+===================================
+Summary
+===================================
+Rakuten File: ${rakutenFile}
+num transactions: ${numRakutenTransactions}
+num missing from Generic File: ${numRakutenMissing}
+num file errors: ${numRakutenErrors}
+
+Generic File: ${genericFile}
+num transactions: ${numGenericTransactions}
+num missing from Generic File: ${numGenericMissing}
+num file errors: ${numGenericErrors}
+
+===================================
+Rakuten File Details
+===================================
+Missing From Generic File:
+${rakutenMissing}
+
+Parsing Errors:
+${rakutenErrors}
+
+===================================
+Generic File Details
+===================================
+Missing From Generic File:
+${genericMissing}
+
+Parsing Errors:
+${genericErrors}

@@ -4,22 +4,22 @@ import java.util.Optional;
 import org.immutables.value.Value;
 
 @Value.Immutable
-public interface Result<V> {
+public abstract class Result<V> {
 
-    static <T> Result<T> error(final Err error) {
+    public static <T> Result<T> error(final Err error) {
         return (Result<T>) ImmutableResult.builder().error(error).build();
     }
 
-    static <T> Result<T> value(final T value) {
+    public static <T> Result<T> value(final T value) {
         return (Result<T>) ImmutableResult.builder().value(value).build();
     }
 
-    Optional<Err> error();
+    public abstract Optional<Err> error();
 
-    Optional<V> value();
+    public abstract Optional<V> value();
 
     @Value.Check
-    default void check() {
+    protected void check() {
         final String baseMessage = "exactly one of 'error' and 'value' should be set, but ";
         if (error().isPresent() && value().isPresent()) {
             throw new IllegalArgumentException(baseMessage + "but both were set.");
