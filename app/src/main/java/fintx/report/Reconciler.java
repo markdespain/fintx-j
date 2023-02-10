@@ -91,8 +91,9 @@ public class Reconciler {
             final Map<String, List<FinTransaction>> amountToTxns) {
         final ImmutableList.Builder<FinTransaction> missing = ImmutableList.builder();
         for (FinTransaction tx : txns) {
-            final List<FinTransaction> txnsForAmount = amountToTxns.get(tx.amount());
-            if (txnsForAmount == null || txnsForAmount.isEmpty()) {
+            final List<FinTransaction> txnsForAmount =
+                    amountToTxns.getOrDefault(tx.amount(), Collections.emptyList());
+            if (txnsForAmount.isEmpty()) {
                 missing.add(tx);
             } else {
                 // remove the tranxaction... Note that this approach is flawed in the case of
@@ -109,9 +110,6 @@ public class Reconciler {
                     // However, for the moment I'll consider it as good enough.
                     txnsForAmount.remove(0);
                 }
-            }
-            if (txnsForAmount != null && txnsForAmount.isEmpty()) {
-                amountToTxns.remove(tx.amount());
             }
         }
         return missing.build();
