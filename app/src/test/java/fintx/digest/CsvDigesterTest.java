@@ -9,6 +9,7 @@ import fintx.model.ImmutableFinTransaction;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -77,7 +78,14 @@ public class CsvDigesterTest {
                                         .placeOrProduct("eon")
                                         .amount("1784")
                                         .build()),
-                        ONE_ERROR));
+                        ONE_ERROR),
+                arguments(
+                        "CsvDigesterTest/no-such-file.csv",
+                        CsvDigester.DEFAULT,
+                        Collections.emptyList(),
+                        ONE_ERROR)
+
+                /* */ );
     }
 
     @ParameterizedTest(name = "{0}")
