@@ -24,6 +24,10 @@ public class ReconcilerTest {
                         Collections.emptyList(),
                         Collections.emptyList()),
                 arguments(
+                        "ReconcilerTest/matchWithDifferentNames/",
+                        Collections.emptyList(),
+                        Collections.emptyList()),
+                arguments(
                         "ReconcilerTest/noOverlap/",
                         Arrays.asList(
                                 ImmutableFinTransaction.builder()
