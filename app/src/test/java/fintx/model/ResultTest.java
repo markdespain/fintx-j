@@ -28,8 +28,7 @@ public class ResultTest {
     @MethodSource
     void testValidation(
             final Optional<Err> error, final Optional<String> output, final boolean expectValid) {
-        final Executable executable =
-                () -> ImmutableResult.builder().error(error).value(output).build();
+        final Executable executable = () -> ImmutableResult.of(error, output);
         JunitUtil.assertValidity(expectValid, executable);
     }
 }

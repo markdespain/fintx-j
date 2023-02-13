@@ -60,7 +60,7 @@ public class CsvDigesterTest {
                 arguments(
                         "CsvDigesterTest/rakuten-bad-date-format.csv",
                         CsvDigester.RAKUTEN_CC,
-                        Arrays.asList(
+                        List.of(
                                 ImmutableFinTransaction.builder()
                                         .lineNumber(2)
                                         .date(LocalDate.of(2022, 12, 30))
@@ -71,7 +71,7 @@ public class CsvDigesterTest {
                 arguments(
                         "CsvDigesterTest/generic-bad-date-format.csv",
                         CsvDigester.DEFAULT,
-                        Arrays.asList(
+                        List.of(
                                 ImmutableFinTransaction.builder()
                                         .lineNumber(2)
                                         .date(LocalDate.of(2023, 2, 3))

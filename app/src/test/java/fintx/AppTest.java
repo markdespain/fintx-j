@@ -1,5 +1,6 @@
 package fintx;
 
+import static fintx.Fixture.UNBOUNDED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -28,15 +29,18 @@ public class AppTest {
                 arguments(
                         SUCCESS,
                         ImmutableReport.builder()
+                                .dateRange(UNBOUNDED)
                                 .rakutenFileInfo(
                                         ImmutableFileInfo.builder()
                                                 .name(rakutenFile)
                                                 .numTransactions(2)
+                                                .numTransactionsInDateRange(2)
                                                 .build())
                                 .genericFileInfo(
                                         ImmutableFileInfo.builder()
                                                 .name(genericFile)
                                                 .numTransactions(2)
+                                                .numTransactionsInDateRange(2)
                                                 .build())
                                 .build(),
                         rakutenFile,
@@ -44,10 +48,12 @@ public class AppTest {
                 arguments(
                         FAIL,
                         ImmutableReport.builder()
+                                .dateRange(UNBOUNDED)
                                 .rakutenFileInfo(
                                         ImmutableFileInfo.builder()
                                                 .name(noSuchFile)
                                                 .numTransactions(0)
+                                                .numTransactionsInDateRange(0)
                                                 .digestErrors(
                                                         List.of(
                                                                 Err.fileNotFound(
@@ -57,6 +63,7 @@ public class AppTest {
                                         ImmutableFileInfo.builder()
                                                 .name(genericFile)
                                                 .numTransactions(2)
+                                                .numTransactionsInDateRange(2)
                                                 .missingFromOther(
                                                         List.of(
                                                                 ImmutableFinTransaction.builder()

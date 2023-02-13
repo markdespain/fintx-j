@@ -1,13 +1,17 @@
 ===================================
 Summary
 ===================================
+Date range: ${dateRange}
+
 Rakuten File: ${rakutenFile}
 num transactions: ${numRakutenTransactions}
+num transactions in date range: ${numRakutenTransactionsInDateRange}
 num transactions not found in Generic File: ${numRakutenMissing}
 num file errors: ${numRakutenErrors}
 
 Generic File: ${genericFile}
 num transactions: ${numGenericTransactions}
+num transactions in date range: ${numGenericTransactionsInDateRange}
 num transactions not found in Rakuten File: ${numGenericMissing}
 num file errors: ${numGenericErrors}
 

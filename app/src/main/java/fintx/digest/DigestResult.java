@@ -23,7 +23,9 @@ public interface DigestResult {
                 .build();
     }
 
+    @Value.Parameter
     ImmutableList<Err> errors();
 
+    @Value.Parameter
     ImmutableList<FinTransaction> transactions();
 }

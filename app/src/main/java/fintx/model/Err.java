@@ -7,7 +7,7 @@ import org.immutables.value.Value;
 public interface Err {
 
     static Err message(final String message) {
-        return ImmutableErr.builder().message(message).build();
+        return ImmutableErr.of(message);
     }
 
     static Err fileNotFound(final File file) {
@@ -25,5 +25,6 @@ public interface Err {
         return message(errorMessage);
     }
 
+    @Value.Parameter
     String message();
 }

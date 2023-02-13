@@ -4,9 +4,12 @@
 package fintx;
 
 import fintx.format.ReportFormatter;
+import fintx.model.DateRange;
+import fintx.model.ImmutableDateRange;
 import fintx.model.Report;
 import fintx.report.Reconciler;
 import java.io.File;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import picocli.CommandLine;
@@ -29,6 +32,18 @@ public class App implements Callable<Report> {
             required = true)
     private File genericFile;
 
+    @CommandLine.Option(
+            names = {"-s", "--start", "--startInclusive"},
+            description =
+                    "Filter identifying the start date of the range records to match (inclusive)")
+    private LocalDate startInclusive;
+
+    @CommandLine.Option(
+            names = {"-e", "--end", "--endExclusive"},
+            description =
+                    "Filter identifying the end date of the range records to match (exclusive)")
+    private LocalDate endExclusive;
+
     public static void main(String[] args) {
         final CommandLine commandLine = new CommandLine(new App());
         final int commandLineExitCode = commandLine.execute(args);
@@ -44,7 +59,10 @@ public class App implements Callable<Report> {
 
     @Override
     public Report call() {
-        return new Reconciler().reconcile(rakutenFile, genericFile);
+        final DateRange dateRange =
+                ImmutableDateRange.of(
+                        Optional.ofNullable(startInclusive), Optional.ofNullable(endExclusive));
+        return new Reconciler().reconcile(rakutenFile, genericFile, dateRange);
     }
 
     static int getFinalErrorCode(final Optional<Report> result, final int commandLineExitCode) {

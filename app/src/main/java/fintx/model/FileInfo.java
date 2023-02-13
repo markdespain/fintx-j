@@ -24,6 +24,13 @@ public interface FileInfo {
     int numTransactions();
 
     /**
+     * The number of successfully digested transactions that matched date range for the report.
+     *
+     * @see #numTransactions()
+     */
+    int numTransactionsInDateRange();
+
+    /**
      * The number of transactions from this file that were missing from the other file.
      *
      * @see fintx.report.Reconciler

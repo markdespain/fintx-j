@@ -14,8 +14,10 @@ public abstract class Result<V> {
         return (Result<T>) ImmutableResult.builder().value(value).build();
     }
 
+    @Value.Parameter
     public abstract Optional<Err> error();
 
+    @Value.Parameter
     public abstract Optional<V> value();
 
     @Value.Check

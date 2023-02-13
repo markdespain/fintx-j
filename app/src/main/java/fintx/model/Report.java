@@ -9,6 +9,8 @@ public interface Report {
 
     FileInfo genericFileInfo();
 
+    DateRange dateRange();
+
     @Value.Derived
     @Value.Redacted
     default boolean hasErrors() {

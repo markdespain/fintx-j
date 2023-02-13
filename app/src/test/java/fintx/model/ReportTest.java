@@ -1,5 +1,6 @@
 package fintx.model;
 
+import static fintx.Fixture.UNBOUNDED;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import java.util.Collections;
@@ -21,6 +22,7 @@ public class ReportTest {
                         .digestErrors(Collections.emptyList())
                         .missingFromOther(Collections.emptyList())
                         .numTransactions(1)
+                        .numTransactionsInDateRange(1)
                         .build();
 
         final FileInfo hasErrors =
@@ -34,24 +36,28 @@ public class ReportTest {
                 arguments(
                         NO_ERRORS,
                         ImmutableReport.builder()
+                                .dateRange(UNBOUNDED)
                                 .rakutenFileInfo(noErrors)
                                 .genericFileInfo(noErrors)
                                 .build()),
                 arguments(
                         HAS_ERRORS,
                         ImmutableReport.builder()
+                                .dateRange(UNBOUNDED)
                                 .rakutenFileInfo(hasErrors)
                                 .genericFileInfo(noErrors)
                                 .build()),
                 arguments(
                         HAS_ERRORS,
                         ImmutableReport.builder()
+                                .dateRange(UNBOUNDED)
                                 .rakutenFileInfo(noErrors)
                                 .genericFileInfo(hasErrors)
                                 .build()),
                 arguments(
                         HAS_ERRORS,
                         ImmutableReport.builder()
+                                .dateRange(UNBOUNDED)
                                 .rakutenFileInfo(hasErrors)
                                 .genericFileInfo(hasErrors)
                                 .build()));

@@ -1,5 +1,7 @@
 package fintx.format;
 
+import static fintx.format.Formats.DATE_FORMAT;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Resources;
@@ -9,7 +11,6 @@ import fintx.model.Report;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -38,16 +39,21 @@ public class ReportFormatter {
         }
     }
 
-    public String format(Report report) {
+    public String format(final Report report) {
 
         final ImmutableMap<String, String> values =
                 ImmutableMap.<String, String>builder()
+                        .put("dateRange", report.dateRange().toString())
 
                         // Rakuten file summary
                         .put("rakutenFile", report.rakutenFileInfo().name())
                         .put(
                                 "numRakutenTransactions",
                                 Integer.toString(report.rakutenFileInfo().numTransactions()))
+                        .put(
+                                "numRakutenTransactionsInDateRange",
+                                Integer.toString(
+                                        report.rakutenFileInfo().numTransactionsInDateRange()))
                         .put(
                                 "numRakutenMissing",
                                 Integer.toString(
@@ -67,6 +73,10 @@ public class ReportFormatter {
                         .put(
                                 "numGenericTransactions",
                                 Integer.toString(report.genericFileInfo().numTransactions()))
+                        .put(
+                                "numGenericTransactionsInDateRange",
+                                Integer.toString(
+                                        report.genericFileInfo().numTransactionsInDateRange()))
                         .put(
                                 "numGenericMissing",
                                 Integer.toString(
@@ -96,7 +106,7 @@ public class ReportFormatter {
     }
 
     private static String formatTx(final FinTransaction tx) {
-        final String formattedDate = DateTimeFormatter.ISO_DATE.format(tx.date());
+        final String formattedDate = DATE_FORMAT.format(tx.date());
         return String.format(
                 "%-4s\t%-10s\t%-20s\t%s",
                 tx.lineNumber(), formattedDate, tx.amount(), tx.placeOrProduct());
