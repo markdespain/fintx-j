@@ -10,8 +10,8 @@ import java.util.*;
 /** Produces a report that reconciles transactions contained within two files. */
 public class Reconciler {
 
-    private static final Comparator<FinTransaction> PLACE_OR_PRODUCT =
-            Comparator.comparing(FinTransaction::placeOrProduct);
+    private static final Comparator<FinTransaction> DATE =
+            Comparator.comparing(FinTransaction::date);
 
     /**
      * Produces a report that reconciles transactions contained within two files.
@@ -69,15 +69,14 @@ public class Reconciler {
                 missing.add(tx);
                 continue;
             }
-            // remove the transaction based on if a match ws found.  If no match just remove the
+            // Remove the transaction based on if a match ws found.  If no match just remove the
             // first item in the list.
-            // note that this approach is flawed in the case of
-            // multiple transactions with the same amount, since a later transaction could
-            // have had an exact match.
+            //
+            // There is room for better matching behavior for the cases where multiple transactions
+            // are present for the same amount.
             // However, for the moment I'll consider it as good enough.
             final int indexToRemove =
-                    // note: perhaps matching by date is more likely...
-                    Math.max(0, Collections.binarySearch(txnsForAmount, tx, PLACE_OR_PRODUCT));
+                    Math.max(0, Collections.binarySearch(txnsForAmount, tx, DATE));
             txnsForAmount.remove(indexToRemove);
         }
         return missing.build();
@@ -85,7 +84,7 @@ public class Reconciler {
 
     /**
      * Returns a mutable Map of transactions, grouped by their amount. The list of transactions for
-     * each amount is also mutable, as well as sorted by {@link #PLACE_OR_PRODUCT}.
+     * each amount is also mutable, as well as sorted by {@link #DATE}.
      *
      * <p>This returned value is intended to be used by {@link #findMissingFromSecond(ImmutableList,
      * ImmutableList)} (List, Map)} which will modify the returned value.
@@ -104,7 +103,7 @@ public class Reconciler {
             }
         }
         // sort each list by name for ease of searchability
-        amountToTxns.values().forEach(txns -> txns.sort(PLACE_OR_PRODUCT));
+        amountToTxns.values().forEach(txns -> txns.sort(DATE));
         return amountToTxns;
     }
 
