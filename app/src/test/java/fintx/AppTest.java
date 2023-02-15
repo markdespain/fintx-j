@@ -3,6 +3,7 @@ package fintx;
 import static fintx.Fixture.UNBOUNDED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
+import static picocli.CommandLine.ExitCode;
 
 import com.github.stefanbirkner.systemlambda.SystemLambda;
 import fintx.format.ReportFormatter;
@@ -14,11 +15,9 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import picocli.CommandLine;
 
 public class AppTest {
-
-    public static final int SUCCESS = 0;
-    public static final int FAIL = 1;
 
     static Stream<Arguments> testMain() {
         final String rakutenFile = "src/test/resources/AppTest/exactMatch/rakuten.csv";
@@ -27,7 +26,7 @@ public class AppTest {
 
         return Stream.of(
                 arguments(
-                        SUCCESS,
+                        ExitCode.OK,
                         ImmutableReport.builder()
                                 .dateRange(UNBOUNDED)
                                 .rakutenFileInfo(
@@ -46,7 +45,7 @@ public class AppTest {
                         rakutenFile,
                         genericFile),
                 arguments(
-                        FAIL,
+                        CommandLine.ExitCode.SOFTWARE,
                         ImmutableReport.builder()
                                 .dateRange(UNBOUNDED)
                                 .rakutenFileInfo(

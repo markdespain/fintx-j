@@ -13,12 +13,10 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import picocli.CommandLine;
+import picocli.CommandLine.ExitCode;
 
 @CommandLine.Command
-public class App implements Callable<Report> {
-
-    private static final int SUCCESS = 0;
-    private static final int FAIL = 1;
+public class App implements Callable<Integer> {
 
     @CommandLine.Option(
             names = "-r",
@@ -45,11 +43,8 @@ public class App implements Callable<Report> {
     private LocalDate endExclusive;
 
     public static void main(String[] args) {
-        final CommandLine commandLine = new CommandLine(new App());
-        final int commandLineExitCode = commandLine.execute(args);
-        final Optional<Report> result = Optional.ofNullable(commandLine.getExecutionResult());
-        result.ifPresent(App::print);
-        System.exit(getFinalErrorCode(result, commandLineExitCode));
+        final int exitCode = new CommandLine(new App()).execute(args);
+        System.exit(exitCode);
     }
 
     private static void print(final Report report) {
@@ -58,16 +53,12 @@ public class App implements Callable<Report> {
     }
 
     @Override
-    public Report call() {
+    public Integer call() {
         final DateRange dateRange =
                 ImmutableDateRange.of(
                         Optional.ofNullable(startInclusive), Optional.ofNullable(endExclusive));
-        return new Reconciler().reconcile(rakutenFile, genericFile, dateRange);
-    }
-
-    static int getFinalErrorCode(final Optional<Report> result, final int commandLineExitCode) {
-        return result.filter(report -> commandLineExitCode != SUCCESS || !report.hasErrors())
-                .map(digestResult -> commandLineExitCode)
-                .orElse(FAIL);
+        final Report report = new Reconciler().reconcile(rakutenFile, genericFile, dateRange);
+        print(report);
+        return report.hasErrors() ? ExitCode.SOFTWARE : ExitCode.OK;
     }
 }
