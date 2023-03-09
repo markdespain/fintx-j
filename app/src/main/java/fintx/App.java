@@ -90,13 +90,15 @@ public class App implements Callable<Integer> {
         final Result<Config> file1Config = parseConfig(file1Format);
         if (file1Config.error().isPresent()) {
             System.err.println(
-                    "file2: invalid format. error: " + file1Config.error().get().message());
+                    "file1: invalid format specification. error: "
+                            + file1Config.error().get().message());
             return ExitCode.USAGE;
         }
         final Result<Config> file2Config = parseConfig(file2Format);
         if (file2Config.error().isPresent()) {
             System.err.println(
-                    "file12 invalid format. error: " + file2Config.error().get().message());
+                    "file2 invalid format specification. error: "
+                            + file2Config.error().get().message());
             return ExitCode.USAGE;
         }
         final DateRange dateRange =
