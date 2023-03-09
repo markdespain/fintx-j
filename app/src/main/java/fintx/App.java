@@ -34,7 +34,7 @@ public class App implements Callable<Integer> {
     @CommandLine.Option(
             names = {"-f1f", "-file1Format"},
             description = "Format for file1",
-            defaultValue = RAKUTEN_FORMAT)
+            defaultValue = DEFAULT_FORMAT)
     private String file1Format;
 
     @CommandLine.Option(

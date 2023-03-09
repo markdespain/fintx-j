@@ -107,6 +107,8 @@ public class AppTest {
                                                             new String[] {
                                                                 "-file1",
                                                                 rakutenFile,
+                                                                "-file1Format",
+                                                                "rakuten",
                                                                 "-file2",
                                                                 genericFile
                                                             }));
