@@ -61,7 +61,7 @@ public class CsvDigester {
                     placeOrProductIndex() >= 0, "placeOrProductIndex must be >= 0");
             Preconditions.checkArgument(amountIndex() >= 0, "amountIndex must be >= 0");
 
-            // note: could validate uniquieness of indexes
+            // note: could validate uniqueness of indexes
         }
 
         @Value.Derived
