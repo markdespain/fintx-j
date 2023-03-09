@@ -7,7 +7,7 @@ The examples below show how to invoke the application via Gradle, based on files
 
 ## Example: No Transaction Discrepancies Found
 ```console
-./gradlew run --args="-file1=src/test/resources/ReconcilerTest/exactMatch/rakuten.csv -file1Format=rakuten -file2=src/test/resources/ReconcilerTest/exactMatch/generic.csv" 
+./gradlew run --args="-file1=src/test/resources/ReconcilerTest/exactMatch/rakuten.csv -file1Format=rakuten -file2=src/test/resources/ReconcilerTest/exactMatch/generic.csv"
 
 > Task :app:run
 ===================================
@@ -15,42 +15,42 @@ Summary
 ===================================
 Date range: [-∞, ∞)
 
-Rakuten File: src/test/resources/ReconcilerTest/exactMatch/rakuten.csv
+File 1: src/test/resources/ReconcilerTest/exactMatch/rakuten.csv
 num transactions: 2
 num transactions in date range: 2
-num transactions not found in Generic File: 0
+num transactions not found in File 2: 0
 num file errors: 0
 
-Generic File: src/test/resources/ReconcilerTest/exactMatch/generic.csv
+File 2: src/test/resources/ReconcilerTest/exactMatch/generic.csv
 num transactions: 2
 num transactions in date range: 2
-num transactions not found in Rakuten File: 0
+num transactions not found in File 1: 0
 num file errors: 0
 
 ===================================
-Rakuten File Details
+File 1 Details
 ===================================
-Transactions not found in Generic file:
+transactions not found in File 2:
 (none)
 
-File Errors:
+file errors:
 (none)
 
 ===================================
-Generic File Details
+File 2 Details
 ===================================
-Transactions not found in Rakuten file:
+transactions not found in File 1:
 (none)
 
-File Errors:
+file errors:
 (none)
 
-BUILD SUCCESSFUL in 985ms
+BUILD SUCCESSFUL in 1s
 ```
 
 ## Example: Transaction Discrepancies Found  
 ```console
-./gradlew run --args="-file1=src/test/resources/ReconcilerTest/partialOverlap/rakuten.csv -file1Format=rakuten -file2=src/test/resources/ReconcilerTest/partialOverlap/generic.csv"
+ ./gradlew run --args="-file1=src/test/resources/ReconcilerTest/partialOverlap/rakuten.csv -file1Format=rakuten -file2=src/test/resources/ReconcilerTest/partialOverlap/generic.csv"
 
 > Task :app:run
 ===================================
@@ -58,35 +58,37 @@ Summary
 ===================================
 Date range: [-∞, ∞)
 
-Rakuten File: src/test/resources/ReconcilerTest/partialOverlap/rakuten.csv
+File 1: src/test/resources/ReconcilerTest/partialOverlap/rakuten.csv
 num transactions: 2
 num transactions in date range: 2
-num transactions not found in Generic File: 1
+num transactions not found in File 2: 1
 num file errors: 0
 
-Generic File: src/test/resources/ReconcilerTest/partialOverlap/generic.csv
+File 2: src/test/resources/ReconcilerTest/partialOverlap/generic.csv
 num transactions: 2
 num transactions in date range: 2
-num transactions not found in Rakuten File: 1
+num transactions not found in File 1: 1
 num file errors: 0
 
 ===================================
-Rakuten File Details
+File 1 Details
 ===================================
-Transactions not found in Generic file:
+transactions not found in File 2:
 line    date            amount                  place or item       
 2       2022-12-30      7580                    item 1
 
-File Errors:
+file errors:
 (none)
 
 ===================================
-Generic File Details
+File 2 Details
 ===================================
-Transactions not found in Rakuten file:
+transactions not found in File 1:
 line    date            amount                  place or item       
 2       2023-02-03      1784                    eon
 
-File Errors:
+file errors:
 (none)
+
+BUILD SUCCESSFUL in 1s
 ```
