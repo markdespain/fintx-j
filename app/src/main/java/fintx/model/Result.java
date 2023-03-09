@@ -6,12 +6,16 @@ import org.immutables.value.Value;
 @Value.Immutable
 public abstract class Result<V> {
 
+    public static <T> Result<T> error(final Exception ex) {
+        return error(Err.from(ex));
+    }
+
     public static <T> Result<T> error(final Err error) {
-        return (Result<T>) ImmutableResult.builder().error(error).build();
+        return ImmutableResult.<T>builder().error(error).build();
     }
 
     public static <T> Result<T> value(final T value) {
-        return (Result<T>) ImmutableResult.builder().value(value).build();
+        return ImmutableResult.<T>builder().value(value).build();
     }
 
     @Value.Parameter

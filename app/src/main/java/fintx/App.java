@@ -84,23 +84,25 @@ public class App implements Callable<Integer> {
 
     @Override
     public Integer call() {
-
         final Result<Config> file1Config = parseConfig(file1Format);
         if (file1Config.error().isPresent()) {
-            System.err.println("file2: invalid format. error: " + file1Config.error().get().message());
+            System.err.println(
+                    "file2: invalid format. error: " + file1Config.error().get().message());
             return ExitCode.USAGE;
         }
         final Result<Config> file2Config = parseConfig(file2Format);
         if (file2Config.error().isPresent()) {
-            System.err.println("file12 invalid format. error: " + file2Config.error().get().message());
+            System.err.println(
+                    "file12 invalid format. error: " + file2Config.error().get().message());
             return ExitCode.USAGE;
         }
 
         final DateRange dateRange =
                 ImmutableDateRange.of(
                         Optional.ofNullable(startInclusive), Optional.ofNullable(endExclusive));
-        final Report report = new Reconciler(file1Config.value().get(), file2Config.value().get())
-                .reconcile(file1, file2, dateRange);
+        final Report report =
+                new Reconciler(file1Config.value().get(), file2Config.value().get())
+                        .reconcile(file1, file2, dateRange);
         print(report);
         return report.hasErrors() ? ExitCode.SOFTWARE : ExitCode.OK;
     }

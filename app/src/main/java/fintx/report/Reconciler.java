@@ -29,10 +29,7 @@ public class Reconciler {
      * @param file2 file that is in the default generic CSV file format
      * @param dateRange date range of the transactions to reconcile for each file
      */
-    public Report reconcile(
-            final File file1,
-            final File file2,
-            final DateRange dateRange) {
+    public Report reconcile(final File file1, final File file2, final DateRange dateRange) {
         final DigestResult file1Digest = new CsvDigester(file1Config).digest(file1);
         final DigestResult file2Digest = new CsvDigester(file2Config).digest(file2);
 
@@ -53,11 +50,9 @@ public class Reconciler {
         // 3.  build report
         return ImmutableReport.builder()
                 .rakutenFileInfo(
-                        buildFileInfo(
-                                file1, file1Digest, file1TxnsInDateRange, file1Missing))
+                        buildFileInfo(file1, file1Digest, file1TxnsInDateRange, file1Missing))
                 .genericFileInfo(
-                        buildFileInfo(
-                                file2, file2Digest, file2TxnsInDateRange, file2Missing))
+                        buildFileInfo(file2, file2Digest, file2TxnsInDateRange, file2Missing))
                 .dateRange(dateRange)
                 .build();
     }
@@ -67,8 +62,7 @@ public class Reconciler {
      * in the second list.
      */
     private static ImmutableList<FinTransaction> findMissingFromSecond(
-            final ImmutableList<FinTransaction> first,
-            final ImmutableList<FinTransaction> second) {
+            final ImmutableList<FinTransaction> first, final ImmutableList<FinTransaction> second) {
         final Map<String, List<FinTransaction>> amountToTxns =
                 groupByAmountSortByPlaceOrProduct(second);
         final ImmutableList.Builder<FinTransaction> missing = ImmutableList.builder();
