@@ -25,27 +25,29 @@ public class App implements Callable<Integer> {
     private static final String RAKUTEN_FORMAT = "rakuten";
     private static final String DEFAULT_FORMAT = "default";
 
+    private static final String CSV_FORMAT_OPTIONS = "default, rakuten, or a specification expressed in JSON)";
+
     @CommandLine.Option(
             names = {"-f1", "-file1"},
-            description = "Rakuten transactions file in CSV format",
+            description = "transactions file 1",
             required = true)
     private File file1;
 
     @CommandLine.Option(
             names = {"-f1f", "-file1Format"},
-            description = "Format for file1",
+            description = "CSV format for file 1: " + CSV_FORMAT_OPTIONS,
             defaultValue = DEFAULT_FORMAT)
     private String file1Format;
 
     @CommandLine.Option(
             names = {"-f2", "-file2"},
-            description = "Generic transactions file in CSV format",
+            description = "transactions file 2",
             required = true)
     private File file2;
 
     @CommandLine.Option(
             names = {"-f2f", "-file2Format"},
-            description = "Format for file2",
+            description = "CSV format for file 2: " + CSV_FORMAT_OPTIONS,
             defaultValue = DEFAULT_FORMAT)
     private String file2Format;
 
@@ -96,7 +98,6 @@ public class App implements Callable<Integer> {
                     "file12 invalid format. error: " + file2Config.error().get().message());
             return ExitCode.USAGE;
         }
-
         final DateRange dateRange =
                 ImmutableDateRange.of(
                         Optional.ofNullable(startInclusive), Optional.ofNullable(endExclusive));
