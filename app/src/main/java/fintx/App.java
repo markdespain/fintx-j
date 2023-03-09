@@ -38,7 +38,7 @@ public class App implements Callable<Integer> {
     private String file1Format;
 
     @CommandLine.Option(
-            names = {"-g", "-f2", "-file2"},
+            names = {"-f2", "-file2"},
             description = "Generic transactions file in CSV format",
             required = true)
     private File file2;

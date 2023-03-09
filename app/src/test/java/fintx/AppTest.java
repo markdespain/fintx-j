@@ -102,12 +102,14 @@ public class AppTest {
                         () -> {
                             final int statusCode =
                                     SystemLambda.catchSystemExit(
-                                            () -> {
-                                                App.main(
-                                                        new String[] {
-                                                            "-file1", rakutenFile, "-g", genericFile
-                                                        });
-                                            });
+                                            () ->
+                                                    App.main(
+                                                            new String[] {
+                                                                "-file1",
+                                                                rakutenFile,
+                                                                "-file2",
+                                                                genericFile
+                                                            }));
                             assertEquals(expectedCode, statusCode);
                         });
         final String expectedOutput = new ReportFormatter().format(expectedReport) + "\n";
