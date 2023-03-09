@@ -6,6 +6,11 @@ import org.immutables.value.Value;
 @Value.Immutable
 public interface Err {
 
+    static Err from(final Exception ex) {
+        final String message = "type: " + ex.getClass().getName() + ", message: " + ex.getMessage();
+        return message(message);
+    }
+
     static Err message(final String message) {
         return ImmutableErr.of(message);
     }

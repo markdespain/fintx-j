@@ -3,13 +3,17 @@
  */
 package fintx;
 
+import fintx.digest.CsvDigester;
+import fintx.digest.CsvDigester.Config;
 import fintx.format.ReportFormatter;
 import fintx.model.DateRange;
 import fintx.model.ImmutableDateRange;
 import fintx.model.Report;
+import fintx.model.Result;
 import fintx.report.Reconciler;
 import java.io.File;
 import java.time.LocalDate;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import picocli.CommandLine;
@@ -18,17 +22,32 @@ import picocli.CommandLine.ExitCode;
 @CommandLine.Command
 public class App implements Callable<Integer> {
 
-    @CommandLine.Option(
-            names = "-r",
-            description = "Rakuten transactions file in CSV format",
-            required = true)
-    private File rakutenFile;
+    private static final String RAKUTEN_FORMAT = "rakuten";
+    private static final String DEFAULT_FORMAT = "default";
 
     @CommandLine.Option(
-            names = "-g",
+            names = {"-r", "-f1", "-file1"},
+            description = "Rakuten transactions file in CSV format",
+            required = true)
+    private File file1;
+
+    @CommandLine.Option(
+            names = {"-f1f", "-file1Format"},
+            description = "Format for file1",
+            defaultValue = RAKUTEN_FORMAT)
+    private String file1Format;
+
+    @CommandLine.Option(
+            names = {"-g", "-f2", "-file2"},
             description = "Generic transactions file in CSV format",
             required = true)
-    private File genericFile;
+    private File file2;
+
+    @CommandLine.Option(
+            names = {"-f2f", "-file2Format"},
+            description = "Format for file2",
+            defaultValue = DEFAULT_FORMAT)
+    private String file2Format;
 
     @CommandLine.Option(
             names = {"-s", "--start", "--startInclusive"},
@@ -52,12 +71,36 @@ public class App implements Callable<Integer> {
         System.out.println(formattedReport);
     }
 
+    static Result<Config> parseConfig(final String config) {
+        final String trimmedConfig = config.trim();
+        if (config.isEmpty() || trimmedConfig.toLowerCase(Locale.ENGLISH).equals(DEFAULT_FORMAT)) {
+            return Result.value(CsvDigester.DEFAULT);
+        }
+        if (trimmedConfig.toLowerCase(Locale.ENGLISH).equals(RAKUTEN_FORMAT)) {
+            return Result.value(CsvDigester.RAKUTEN_CC);
+        }
+        return new CsvDigesterConfigParser().parse(config);
+    }
+
     @Override
     public Integer call() {
+
+        final Result<Config> file1Config = parseConfig(file1Format);
+        if (file1Config.error().isPresent()) {
+            System.err.println("file2: invalid format. error: " + file1Config.error().get().message());
+            return ExitCode.USAGE;
+        }
+        final Result<Config> file2Config = parseConfig(file2Format);
+        if (file2Config.error().isPresent()) {
+            System.err.println("file12 invalid format. error: " + file2Config.error().get().message());
+            return ExitCode.USAGE;
+        }
+
         final DateRange dateRange =
                 ImmutableDateRange.of(
                         Optional.ofNullable(startInclusive), Optional.ofNullable(endExclusive));
-        final Report report = new Reconciler().reconcile(rakutenFile, genericFile, dateRange);
+        final Report report = new Reconciler(file1Config.value().get(), file2Config.value().get())
+                .reconcile(file1, file2, dateRange);
         print(report);
         return report.hasErrors() ? ExitCode.SOFTWARE : ExitCode.OK;
     }

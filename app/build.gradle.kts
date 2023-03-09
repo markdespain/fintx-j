@@ -43,6 +43,7 @@ dependencies {
     implementation("info.picocli:picocli:${picoliVersion}")
     implementation("org.immutables:value:${immutablesVersion}")
     implementation("com.google.guava:guava:31.1-jre")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava:2.4.0")
     implementation("com.opencsv:opencsv:5.7.1")
     implementation("org.apache.commons:commons-text:1.10.0")
 
@@ -91,4 +92,6 @@ afterEvaluate {
 
 spotbugs {
     excludeFilter.set(project.file("spotbugs-exclude.xml"))
+    showProgress.set(true)
+    reportLevel.set(com.github.spotbugs.snom.Confidence.MAX_VALUE)
 }

@@ -2,6 +2,7 @@ package fintx.report;
 
 import com.google.common.collect.ImmutableList;
 import fintx.digest.CsvDigester;
+import fintx.digest.CsvDigester.Config;
 import fintx.digest.DigestResult;
 import fintx.model.*;
 import java.io.File;
@@ -13,42 +14,50 @@ public class Reconciler {
     private static final Comparator<FinTransaction> DATE =
             Comparator.comparing(FinTransaction::date);
 
+    private final Config file1Config;
+    private final Config file2Config;
+
+    public Reconciler(final Config file1Config, final Config file2Config) {
+        this.file1Config = file1Config;
+        this.file2Config = file2Config;
+    }
+
     /**
      * Produces a report that reconciles transactions contained within two files.
      *
-     * @param rakutenFile file that is in the Rakuten CSV file format
-     * @param genericFile file that is in the default generic CSV file format
-     * @see fintx.digest.CsvDigester#RAKUTEN_CC
-     * @see fintx.digest.CsvDigester#DEFAULT
+     * @param file1 file that is in the Rakuten CSV file format
+     * @param file2 file that is in the default generic CSV file format
+     * @param dateRange date range of the transactions to reconcile for each file
      */
     public Report reconcile(
-            final File rakutenFile, final File genericFile, final DateRange dateRange) {
-        final DigestResult rakutenDigest =
-                new CsvDigester(CsvDigester.RAKUTEN_CC).digest(rakutenFile);
-        final DigestResult genericDigest = new CsvDigester(CsvDigester.DEFAULT).digest(genericFile);
+            final File file1,
+            final File file2,
+            final DateRange dateRange) {
+        final DigestResult file1Digest = new CsvDigester(file1Config).digest(file1);
+        final DigestResult file2Digest = new CsvDigester(file2Config).digest(file2);
 
         // 0. Create filtered view of the each file's transactions
-        final ImmutableList<FinTransaction> rakutenTxnsInDateRange =
-                filterByDateRange(rakutenDigest.transactions(), dateRange);
-        final ImmutableList<FinTransaction> genericTxnsInDateRange =
-                filterByDateRange(genericDigest.transactions(), dateRange);
+        final ImmutableList<FinTransaction> file1TxnsInDateRange =
+                filterByDateRange(file1Digest.transactions(), dateRange);
+        final ImmutableList<FinTransaction> file2TxnsInDateRange =
+                filterByDateRange(file2Digest.transactions(), dateRange);
 
-        // 1.  Find Rakuten transactions not within generic file
-        final ImmutableList<FinTransaction> rakutenMissing =
-                findMissingFromSecond(rakutenTxnsInDateRange, genericTxnsInDateRange);
+        // 1.  Find file1 transactions not within generic file2
+        final ImmutableList<FinTransaction> file1Missing =
+                findMissingFromSecond(file1TxnsInDateRange, file2TxnsInDateRange);
 
-        // 2.  Find generic file transactions not within Rakuten file
-        final ImmutableList<FinTransaction> genericMissing =
-                findMissingFromSecond(genericTxnsInDateRange, rakutenTxnsInDateRange);
+        // 2.  Find file2 file transactions not within file1
+        final ImmutableList<FinTransaction> file2Missing =
+                findMissingFromSecond(file2TxnsInDateRange, file1TxnsInDateRange);
 
         // 3.  build report
         return ImmutableReport.builder()
                 .rakutenFileInfo(
                         buildFileInfo(
-                                rakutenFile, rakutenDigest, rakutenTxnsInDateRange, rakutenMissing))
+                                file1, file1Digest, file1TxnsInDateRange, file1Missing))
                 .genericFileInfo(
                         buildFileInfo(
-                                genericFile, genericDigest, genericTxnsInDateRange, genericMissing))
+                                file2, file2Digest, file2TxnsInDateRange, file2Missing))
                 .dateRange(dateRange)
                 .build();
     }
@@ -58,7 +67,8 @@ public class Reconciler {
      * in the second list.
      */
     private static ImmutableList<FinTransaction> findMissingFromSecond(
-            final ImmutableList<FinTransaction> first, final ImmutableList<FinTransaction> second) {
+            final ImmutableList<FinTransaction> first,
+            final ImmutableList<FinTransaction> second) {
         final Map<String, List<FinTransaction>> amountToTxns =
                 groupByAmountSortByPlaceOrProduct(second);
         final ImmutableList.Builder<FinTransaction> missing = ImmutableList.builder();

@@ -2,6 +2,8 @@ package fintx.digest;
 
 import static java.lang.Math.max;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Preconditions;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
@@ -22,6 +24,8 @@ import org.immutables.value.Value;
 public class CsvDigester {
 
     @Value.Immutable
+    @JsonSerialize(as = ImmutableConfig.class)
+    @JsonDeserialize(as = ImmutableConfig.class)
     public interface Config {
 
         @Value.Default

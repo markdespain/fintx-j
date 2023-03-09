@@ -1,6 +1,8 @@
 package fintx.report;
 
 import static fintx.Fixture.UNBOUNDED;
+import static fintx.digest.CsvDigester.DEFAULT;
+import static fintx.digest.CsvDigester.RAKUTEN_CC;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -106,7 +108,8 @@ public class ReconcilerTest {
             final List<FinTransaction> genericMissingFromRakuten) {
         final File rakutenFile = JunitUtil.fileForTestResource(testFolder + "rakuten.csv");
         final File genericFile = JunitUtil.fileForTestResource(testFolder + "generic.csv");
-        final Reconciler reconciler = new Reconciler();
+
+        final Reconciler reconciler = new Reconciler(RAKUTEN_CC, DEFAULT);
         final Report report = reconciler.reconcile(rakutenFile, genericFile, dateRange);
         final Report expectedReport =
                 ImmutableReport.builder()
