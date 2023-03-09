@@ -105,7 +105,7 @@ public class AppTest {
                                             () -> {
                                                 App.main(
                                                         new String[] {
-                                                            "-r", rakutenFile, "-g", genericFile
+                                                            "-file1", rakutenFile, "-g", genericFile
                                                         });
                                             });
                             assertEquals(expectedCode, statusCode);

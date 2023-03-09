@@ -26,7 +26,7 @@ public class App implements Callable<Integer> {
     private static final String DEFAULT_FORMAT = "default";
 
     @CommandLine.Option(
-            names = {"-r", "-f1", "-file1"},
+            names = {"-f1", "-file1"},
             description = "Rakuten transactions file in CSV format",
             required = true)
     private File file1;
