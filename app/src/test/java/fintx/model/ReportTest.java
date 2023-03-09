@@ -37,29 +37,29 @@ public class ReportTest {
                         NO_ERRORS,
                         ImmutableReport.builder()
                                 .dateRange(UNBOUNDED)
-                                .rakutenFileInfo(noErrors)
-                                .genericFileInfo(noErrors)
+                                .file1Info(noErrors)
+                                .file2Info(noErrors)
                                 .build()),
                 arguments(
                         HAS_ERRORS,
                         ImmutableReport.builder()
                                 .dateRange(UNBOUNDED)
-                                .rakutenFileInfo(hasErrors)
-                                .genericFileInfo(noErrors)
+                                .file1Info(hasErrors)
+                                .file2Info(noErrors)
                                 .build()),
                 arguments(
                         HAS_ERRORS,
                         ImmutableReport.builder()
                                 .dateRange(UNBOUNDED)
-                                .rakutenFileInfo(noErrors)
-                                .genericFileInfo(hasErrors)
+                                .file1Info(noErrors)
+                                .file2Info(hasErrors)
                                 .build()),
                 arguments(
                         HAS_ERRORS,
                         ImmutableReport.builder()
                                 .dateRange(UNBOUNDED)
-                                .rakutenFileInfo(hasErrors)
-                                .genericFileInfo(hasErrors)
+                                .file1Info(hasErrors)
+                                .file2Info(hasErrors)
                                 .build()));
     }
 

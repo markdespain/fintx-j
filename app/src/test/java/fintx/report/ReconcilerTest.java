@@ -114,7 +114,7 @@ public class ReconcilerTest {
         final Report expectedReport =
                 ImmutableReport.builder()
                         .dateRange(dateRange)
-                        .rakutenFileInfo(
+                        .file1Info(
                                 ImmutableFileInfo.builder()
                                         .name(rakutenFile.getPath())
                                         .numTransactions(2)
@@ -122,7 +122,7 @@ public class ReconcilerTest {
                                                 expectedNumTransactionsInDateRange)
                                         .missingFromOther(rakutenMissingFromGeneric)
                                         .build())
-                        .genericFileInfo(
+                        .file2Info(
                                 ImmutableFileInfo.builder()
                                         .name(genericFile.getPath())
                                         .numTransactions(2)

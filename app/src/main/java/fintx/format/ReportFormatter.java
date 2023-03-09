@@ -46,50 +46,42 @@ public class ReportFormatter {
                         .put("dateRange", report.dateRange().toString())
 
                         // Rakuten file summary
-                        .put("rakutenFile", report.rakutenFileInfo().name())
+                        .put("rakutenFile", report.file1Info().name())
                         .put(
                                 "numRakutenTransactions",
-                                Integer.toString(report.rakutenFileInfo().numTransactions()))
+                                Integer.toString(report.file1Info().numTransactions()))
                         .put(
                                 "numRakutenTransactionsInDateRange",
-                                Integer.toString(
-                                        report.rakutenFileInfo().numTransactionsInDateRange()))
+                                Integer.toString(report.file1Info().numTransactionsInDateRange()))
                         .put(
                                 "numRakutenMissing",
-                                Integer.toString(
-                                        report.rakutenFileInfo().missingFromOther().size()))
+                                Integer.toString(report.file1Info().missingFromOther().size()))
                         .put(
                                 "numRakutenErrors",
-                                Integer.toString(report.rakutenFileInfo().digestErrors().size()))
+                                Integer.toString(report.file1Info().digestErrors().size()))
 
                         // Rakuten file details
-                        .put(
-                                "rakutenMissing",
-                                formatTxs(report.rakutenFileInfo().missingFromOther()))
-                        .put("rakutenErrors", formatErrors(report.rakutenFileInfo().digestErrors()))
+                        .put("rakutenMissing", formatTxs(report.file1Info().missingFromOther()))
+                        .put("rakutenErrors", formatErrors(report.file1Info().digestErrors()))
 
                         // Generic summary
-                        .put("genericFile", report.genericFileInfo().name())
+                        .put("genericFile", report.file2Info().name())
                         .put(
                                 "numGenericTransactions",
-                                Integer.toString(report.genericFileInfo().numTransactions()))
+                                Integer.toString(report.file2Info().numTransactions()))
                         .put(
                                 "numGenericTransactionsInDateRange",
-                                Integer.toString(
-                                        report.genericFileInfo().numTransactionsInDateRange()))
+                                Integer.toString(report.file2Info().numTransactionsInDateRange()))
                         .put(
                                 "numGenericMissing",
-                                Integer.toString(
-                                        report.genericFileInfo().missingFromOther().size()))
+                                Integer.toString(report.file2Info().missingFromOther().size()))
                         .put(
                                 "numGenericErrors",
-                                Integer.toString(report.genericFileInfo().digestErrors().size()))
+                                Integer.toString(report.file2Info().digestErrors().size()))
 
                         // Generic file details
-                        .put(
-                                "genericMissing",
-                                formatTxs(report.genericFileInfo().missingFromOther()))
-                        .put("genericErrors", formatErrors(report.genericFileInfo().digestErrors()))
+                        .put("genericMissing", formatTxs(report.file2Info().missingFromOther()))
+                        .put("genericErrors", formatErrors(report.file2Info().digestErrors()))
                         .build();
 
         return new StringSubstitutor(values).replace(reportTemplate);

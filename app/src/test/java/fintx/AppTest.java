@@ -29,13 +29,13 @@ public class AppTest {
                         ExitCode.OK,
                         ImmutableReport.builder()
                                 .dateRange(UNBOUNDED)
-                                .rakutenFileInfo(
+                                .file1Info(
                                         ImmutableFileInfo.builder()
                                                 .name(rakutenFile)
                                                 .numTransactions(2)
                                                 .numTransactionsInDateRange(2)
                                                 .build())
-                                .genericFileInfo(
+                                .file2Info(
                                         ImmutableFileInfo.builder()
                                                 .name(genericFile)
                                                 .numTransactions(2)
@@ -48,7 +48,7 @@ public class AppTest {
                         CommandLine.ExitCode.SOFTWARE,
                         ImmutableReport.builder()
                                 .dateRange(UNBOUNDED)
-                                .rakutenFileInfo(
+                                .file1Info(
                                         ImmutableFileInfo.builder()
                                                 .name(noSuchFile)
                                                 .numTransactions(0)
@@ -58,7 +58,7 @@ public class AppTest {
                                                                 Err.fileNotFound(
                                                                         new File(noSuchFile))))
                                                 .build())
-                                .genericFileInfo(
+                                .file2Info(
                                         ImmutableFileInfo.builder()
                                                 .name(genericFile)
                                                 .numTransactions(2)

@@ -25,7 +25,8 @@ public class App implements Callable<Integer> {
     private static final String RAKUTEN_FORMAT = "rakuten";
     private static final String DEFAULT_FORMAT = "default";
 
-    private static final String CSV_FORMAT_OPTIONS = "default, rakuten, or a specification expressed in JSON)";
+    private static final String CSV_FORMAT_OPTIONS =
+            "default, rakuten, or a specification expressed in JSON)";
 
     @CommandLine.Option(
             names = {"-f1", "-file1"},

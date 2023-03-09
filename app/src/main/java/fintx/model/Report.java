@@ -5,16 +5,15 @@ import org.immutables.value.Value;
 @Value.Immutable
 public interface Report {
 
-    FileInfo rakutenFileInfo();
+    FileInfo file1Info();
 
-    FileInfo genericFileInfo();
+    FileInfo file2Info();
 
     DateRange dateRange();
 
     @Value.Derived
     @Value.Redacted
     default boolean hasErrors() {
-        return !genericFileInfo().digestErrors().isEmpty()
-                || !rakutenFileInfo().digestErrors().isEmpty();
+        return !file2Info().digestErrors().isEmpty() || !file1Info().digestErrors().isEmpty();
     }
 }

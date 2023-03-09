@@ -49,10 +49,8 @@ public class Reconciler {
 
         // 3.  build report
         return ImmutableReport.builder()
-                .rakutenFileInfo(
-                        buildFileInfo(file1, file1Digest, file1TxnsInDateRange, file1Missing))
-                .genericFileInfo(
-                        buildFileInfo(file2, file2Digest, file2TxnsInDateRange, file2Missing))
+                .file1Info(buildFileInfo(file1, file1Digest, file1TxnsInDateRange, file1Missing))
+                .file2Info(buildFileInfo(file2, file2Digest, file2TxnsInDateRange, file2Missing))
                 .dateRange(dateRange)
                 .build();
     }
