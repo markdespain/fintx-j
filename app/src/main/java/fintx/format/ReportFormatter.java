@@ -45,43 +45,43 @@ public class ReportFormatter {
                 ImmutableMap.<String, String>builder()
                         .put("dateRange", report.dateRange().toString())
 
-                        // Rakuten file summary
-                        .put("rakutenFile", report.file1Info().name())
+                        // File1 summary
+                        .put("file1", report.file1Info().name())
                         .put(
-                                "numRakutenTransactions",
+                                "numFile1Transactions",
                                 Integer.toString(report.file1Info().numTransactions()))
                         .put(
-                                "numRakutenTransactionsInDateRange",
+                                "numFile1TransactionsInDateRange",
                                 Integer.toString(report.file1Info().numTransactionsInDateRange()))
                         .put(
-                                "numRakutenMissing",
+                                "numFile1Missing",
                                 Integer.toString(report.file1Info().missingFromOther().size()))
                         .put(
-                                "numRakutenErrors",
+                                "numFile1Errors",
                                 Integer.toString(report.file1Info().digestErrors().size()))
 
-                        // Rakuten file details
-                        .put("rakutenMissing", formatTxs(report.file1Info().missingFromOther()))
-                        .put("rakutenErrors", formatErrors(report.file1Info().digestErrors()))
+                        // File1 details
+                        .put("file1Missing", formatTxs(report.file1Info().missingFromOther()))
+                        .put("file1Errors", formatErrors(report.file1Info().digestErrors()))
 
-                        // Generic summary
-                        .put("genericFile", report.file2Info().name())
+                        // File2 summary
+                        .put("file2", report.file2Info().name())
                         .put(
-                                "numGenericTransactions",
+                                "numFile2Transactions",
                                 Integer.toString(report.file2Info().numTransactions()))
                         .put(
-                                "numGenericTransactionsInDateRange",
+                                "numFile2TransactionsInDateRange",
                                 Integer.toString(report.file2Info().numTransactionsInDateRange()))
                         .put(
-                                "numGenericMissing",
+                                "numFile2Missing",
                                 Integer.toString(report.file2Info().missingFromOther().size()))
                         .put(
-                                "numGenericErrors",
+                                "numFile2Errors",
                                 Integer.toString(report.file2Info().digestErrors().size()))
 
-                        // Generic file details
-                        .put("genericMissing", formatTxs(report.file2Info().missingFromOther()))
-                        .put("genericErrors", formatErrors(report.file2Info().digestErrors()))
+                        // File2 details
+                        .put("file2Missing", formatTxs(report.file2Info().missingFromOther()))
+                        .put("file2Errors", formatErrors(report.file2Info().digestErrors()))
                         .build();
 
         return new StringSubstitutor(values).replace(reportTemplate);

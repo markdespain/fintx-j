@@ -3,32 +3,32 @@ Summary
 ===================================
 Date range: ${dateRange}
 
-File 1: ${rakutenFile}
-num transactions: ${numRakutenTransactions}
-num transactions in date range: ${numRakutenTransactionsInDateRange}
-num transactions not found in File 2: ${numRakutenMissing}
-num file errors: ${numRakutenErrors}
+File 1: ${file1}
+num transactions: ${numFile1Transactions}
+num transactions in date range: ${numFile1TransactionsInDateRange}
+num transactions not found in File 2: ${numFile1Missing}
+num file errors: ${numFile1Errors}
 
-File 2: ${genericFile}
-num transactions: ${numGenericTransactions}
-num transactions in date range: ${numGenericTransactionsInDateRange}
-num transactions not found in File 1: ${numGenericMissing}
-num file errors: ${numGenericErrors}
+File 2: ${file2}
+num transactions: ${numFile2Transactions}
+num transactions in date range: ${numFile2TransactionsInDateRange}
+num transactions not found in File 1: ${numFile2Missing}
+num file errors: ${numFile2Errors}
 
 ===================================
 File 1 Details
 ===================================
 transactions not found in File 2:
-${rakutenMissing}
+${file1Missing}
 
 file errors:
-${rakutenErrors}
+${file1Errors}
 
 ===================================
 File 2 Details
 ===================================
 transactions not found in File 1:
-${genericMissing}
+${file2Missing}
 
 file errors:
-${genericErrors}
+${file2Errors}
