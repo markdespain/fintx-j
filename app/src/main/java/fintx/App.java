@@ -97,7 +97,7 @@ public class App implements Callable<Integer> {
         final Result<Config> file2Config = parseConfig(file2Format);
         if (file2Config.error().isPresent()) {
             System.err.println(
-                    "file2 invalid format specification. error: "
+                    "file2: invalid format specification. error: "
                             + file2Config.error().get().message());
             return ExitCode.USAGE;
         }
