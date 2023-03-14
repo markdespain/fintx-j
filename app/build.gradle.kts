@@ -44,7 +44,7 @@ dependencies {
     val picoliVersion = "4.7.1" // command line parsing: https://picocli.info
     val immutablesVersion = "2.9.2"
 
-    implementation(kotlin("stdlib-jdk8")):
+    implementation(kotlin("stdlib-jdk8"))
     implementation("info.picocli:picocli:${picoliVersion}")
     implementation("org.immutables:value:${immutablesVersion}")
     implementation("com.google.guava:guava:31.1-jre")
