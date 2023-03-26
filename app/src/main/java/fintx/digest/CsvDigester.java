@@ -50,7 +50,7 @@ public class CsvDigester {
 
         @Value.Default
         default String dateFormat() {
-            return "M/d/yyyy";
+            return "yyyy/M/d";
         }
 
         @Value.Check
@@ -90,11 +90,7 @@ public class CsvDigester {
      * </pre>
      */
     public static final Config RAKUTEN_CC =
-            ImmutableConfig.builder()
-                    .dateFormat("yyyy/M/d")
-                    .placeOrProductIndex(1)
-                    .amountIndex(4)
-                    .build();
+            ImmutableConfig.builder().placeOrProductIndex(1).amountIndex(4).build();
 
     private final Config config;
     private final DateTimeFormatter dateFormat;
