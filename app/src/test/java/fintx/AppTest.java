@@ -12,13 +12,11 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import picocli.CommandLine;
 
-@Disabled("need to fix Security Manager error due to Java update")
 public class AppTest {
 
     static Stream<Arguments> testMain() {
